@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using System.Data.Common;
 using System.Numerics;
+using TrialInfo = trialmanager.TrialInfo;
 
 public class mainmanager : MonoBehaviour
 {
@@ -68,7 +69,7 @@ public class mainmanager : MonoBehaviour
                 FPSController.SetActive(true);
                 Cursor.lockState = CursorLockMode.Locked;
                 canCastSpell = true;
-                trackingManager.SetInitData(dataManager.GetID(), trialManager.version);
+                trackingManager.SetInitData(dataManager.GetID(), trialManager.version.ToString());
                 trialManager.StartPractice();
         }
 
@@ -98,7 +99,7 @@ public class mainmanager : MonoBehaviour
                                                 eventTriggered = true;
                                                 trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.middleTargetClick);
                                         }
-                                        else if (trialManager.isTrialRunning && (hit.collider.name == "rightOrb" || trialManager.isTrialRunning && hit.collider.name == "leftOrb")) // side target hit, trial stops
+                                        else if (trialManager.isTrialRunning && (hit.collider.name == "sphere" || trialManager.isTrialRunning && hit.collider.name == "rectangle")) // side target hit, trial stops
                                         {
                                                 StopTrial(true); // hit success
                                         }
@@ -130,7 +131,7 @@ public class mainmanager : MonoBehaviour
                 endRT = Time.time;
                 currRT = endRT - startRT;
 
-                string activeOrb = trialManager.GetCurrentOrbName();
+                TrialInfo activeOrb = trialManager.GetCurrentTargetInfo();
                 float delay = trialManager.GetDelay(activeOrb);
 
 
@@ -151,8 +152,9 @@ public class mainmanager : MonoBehaviour
                         trialManager.currentRound,
                         trialManager.currentTrial,
                         trackingManager.GetMousePosition().x,
-                        trackingManager.GetMousePosition().y, // TODO 
-                        activeOrb,
+                        trackingManager.GetMousePosition().y,
+                        activeOrb.Shape.ToString(),
+                        activeOrb.Position.ToString(),
                         delay,
                         startRT,
                         endRT,
@@ -200,10 +202,10 @@ public class mainmanager : MonoBehaviour
 
         }
 
-        // gets called with trialmanager.StartTrial()
+        // gets called with trialmanager.PrepareTrial()
         // happens when middle target is hit
 
-        void HandleTrialStart(string activeOrb)
+        void HandleTrialStart(TrialInfo activeOrb)
         {
                 // NOTE: tracking test
                 canCastSpell = false;
@@ -220,7 +222,7 @@ public class mainmanager : MonoBehaviour
 
         }
 
-        public IEnumerator PreTargetStimulusTime(string activeOrb)
+        public IEnumerator PreTargetStimulusTime(TrialInfo activeOrb)
         {
                 trialManager.isWaitingPhase = true;                // TODO: hier muss maus tracking starten
                 // trackingManager.isTrackingMouseData = true;
@@ -240,7 +242,7 @@ public class mainmanager : MonoBehaviour
         }
 
         // gets called with hiding of side target
-        private void HandleTrialEnd(string activeOrb)
+        private void HandleTrialEnd(TrialInfo activeOrb)
         {
                 // here happens nothing right now
                 // maybe handle mouse tracking here

@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Animation_Slowing.sln"
+    "dotnet.defaultSolution": "AnimationSlowing.sln"
 }

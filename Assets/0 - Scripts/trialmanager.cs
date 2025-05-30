@@ -4,13 +4,46 @@ using System.Collections.Generic;
 public class trialmanager : MonoBehaviour
 {
         // important stuff for the trial
-        public int maxTrials = 60;
+        public int numTargetPerShape = 28;
+        public int numTargetPerPosition = 2;
+        public int maxTrials = 56; // maximum trials per round
         public int maxRounds = 8;
         public int practiceTrials = 10;
-        public string version = "lld";
+        public enum ExperimentVersion
+        {
+                SL, // Sphere long delay
+                RL // Rectangle long delay
+        }
+        public ExperimentVersion version = ExperimentVersion.SL;
         public float longDelay = 0.6f;
         public float shortDelay = 0f;
         public float stimulusTime = 0.4f;
+
+        // Custom class to hold target information (shape and position)
+        [System.Serializable] // Makes it visible in the Inspector
+        public class TrialInfo
+        {
+                // target information stuff
+                public enum TrialShape
+                {
+                        Sphere,
+                        Rectangle
+                }
+
+                public enum TrialPosition
+                {
+                        Left, Top, Right, Bottom,
+                        TopLeft, TopRight, BottomLeft, BottomRight
+                }
+                public TrialShape Shape;
+                public TrialPosition Position;
+
+                public TrialInfo(TrialShape shape, TrialPosition position)
+                {
+                        Shape = shape;
+                        Position = position;
+                }
+        }
 
         // current state of things of the trial for other scripts to access
         public string currentPhase = "waitingForTarget";
@@ -18,18 +51,19 @@ public class trialmanager : MonoBehaviour
         public bool isWaitingPhase = false;
         public bool isTrackingRunning = false;
         public bool isRoundFinished = false;
-        public List<string> trialOrder;
+        public List<TrialInfo> trialOrder;
 
         // current count of things
         public int currentTrial = 0;
         public int currentRound = 0;
         public int currentMaxTrials;
-        private string currentOrbStr;
+        // private string currentTargetStr;
+        private TrialInfo currentTargetInfo;
 
         // event stuff
-        public delegate void TrialStartedDelegate(string activeOrb);
+        public delegate void TrialStartedDelegate(TrialInfo activeOrb);
         public event TrialStartedDelegate OnTrialStarted;
-        public delegate void TrialEndedDelegate(string activeOrb);
+        public delegate void TrialEndedDelegate(TrialInfo activeOrb);
         public event TrialEndedDelegate OnTrialEnded;
         public delegate void RoundEndedDelegate();
         public event RoundEndedDelegate OnRoundEnded;
@@ -37,14 +71,15 @@ public class trialmanager : MonoBehaviour
         public event GameEndedDelegate OnGameEnded;
 
         private targetmanager targetManager;
-        private trackingmanager trackingManager;
+        // private trackingmanager trackingManager;
         private fpscounter fpsCounter;
 
         public void Start()
         {
                 // get the scriptmanagers
+                maxTrials = numTargetPerShape * 2; // 28 spheres and 28 recs
                 targetManager = GetComponent<targetmanager>();
-                trackingManager = GetComponent<trackingmanager>();
+                // trackingManager = GetComponent<trackingmanager>();
                 fpsCounter = GetComponent<fpscounter>();
         }
 
@@ -87,14 +122,17 @@ public class trialmanager : MonoBehaviour
         public void GenerateTrialOrder()
         {
                 // list with 30 left and 30 right orbs (not shuffled)
-                trialOrder = new List<string>();
+                trialOrder = new List<TrialInfo>();
+
+                // TODO: shuffle trial order with 50% spheres and 50% rectangles
+                // TODO: and a predefined trial per position
                 for (int i = 0; i < currentMaxTrials / 2; i++)
                 {
-                        trialOrder.Add("left");
-                        trialOrder.Add("right");
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Left));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Right));
                 }
 
-                // shuffle trial order
+                // shuffle trial order Fisher-Yates algorithm
                 for (int i = trialOrder.Count - 1; i > 0; i--)
                 {
                         int randomIndex = UnityEngine.Random.Range(0, i + 1);
@@ -113,11 +151,11 @@ public class trialmanager : MonoBehaviour
                 // isTrackingRunning = true;
                 // currentPhase = "activeTargeting";
 
-                currentOrbStr = trialOrder[currentTrial];
+                currentTargetInfo = trialOrder[currentTrial]; // NOTE: nur uebergangsweise
                 currentTrial++;
 
-                OnTrialStarted?.Invoke(currentOrbStr); // start trial with next side target
-                
+                OnTrialStarted?.Invoke(currentTargetInfo); // start trial with next side target
+
         }
 
         // called in mainmanager after first in in running trial
@@ -125,9 +163,9 @@ public class trialmanager : MonoBehaviour
         public void StopTrial()
         {
                 isTrialRunning = false;
-                
+
                 // starts end-trial-event
-                OnTrialEnded?.Invoke(currentOrbStr);
+                OnTrialEnded?.Invoke(currentTargetInfo);
 
                 // isTrackingRunning = false;
                 currentPhase = "waitingForTarget";
@@ -155,14 +193,45 @@ public class trialmanager : MonoBehaviour
         }
 
         // returns delay for the current orb
-        public float GetDelay(string activeOrbStr)
+        public float GetDelay(TrialInfo activeOrbInfo)
         {
-                // if (currentRound > 8) return shortDelay; // short delay for all trials after 8 rounds
-                // else if (version == "lld" && activeOrbStr == "left") return longDelay;
-                if (currentRound > 8) return shortDelay; // short delay for all trials after 8 rounds
-                else if (version == "lld" && activeOrbStr == "left") return longDelay;
-                else if (version == "rld" && activeOrbStr == "right") return longDelay;
-                return shortDelay; // short
+                // return delay based on version and current shape from TrialInfo
+                if (version == ExperimentVersion.SL)
+                {
+                        // Sphere long delay
+                        if (activeOrbInfo.Shape == TrialInfo.TrialShape.Sphere)
+                        {
+                                return longDelay; // long delay for spheres
+                        }
+                        else
+                        {
+                                return shortDelay; // short delay for rectangles
+                        }
+                }
+                else if (version == ExperimentVersion.RL)
+                {
+                        // Rectangle long delay
+                        if (activeOrbInfo.Shape == TrialInfo.TrialShape.Rectangle)
+                        {
+                                return longDelay; // long delay for rectangles
+                        }
+                        else
+                        {
+                                return shortDelay; // short delay for spheres
+                        }
+                }
+                return shortDelay; // default short delay
+
+                
+
+
+
+
+                // TODO: change to new versions and no rounds
+                //         if (currentRound > 8) return shortDelay; // short delay for all trials after 8 rounds
+                //         else if (version == "lld" && activeOrbStr == "left") return longDelay;
+                //         else if (version == "rld" && activeOrbStr == "right") return longDelay;
+                //         return shortDelay; // short
         }
 
         public void UpdateTrackingPhase(string phase)
@@ -171,12 +240,12 @@ public class trialmanager : MonoBehaviour
         }
 
         // returns current string of side orb
-        public string GetCurrentOrbName()
+        public TrialInfo GetCurrentTargetInfo()
         {
                 // isWaitingPhase = false;
                 // isTrackingRunning = true;
                 // currentPhase = "activeTracking";
-
-                return currentOrbStr;
+                return currentTargetInfo;
+                // return currentTargetStr;
         }
 }
