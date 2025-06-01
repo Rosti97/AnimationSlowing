@@ -36,7 +36,7 @@ public class mainmanager : MonoBehaviour
         public GameObject shadowsParticle;
         public GameObject explosionParticle;
 
-
+        private UnityEngine.Vector3 hitPosition = new UnityEngine.Vector3(1,1,1); // position of the hit target
         void Start()
         {
                 // get the scriptmanagers
@@ -99,7 +99,7 @@ public class mainmanager : MonoBehaviour
                                                 eventTriggered = true;
                                                 trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.middleTargetClick);
                                         }
-                                        else if (trialManager.isTrialRunning && (hit.collider.name == "sphere" || trialManager.isTrialRunning && hit.collider.name == "rectangle")) // side target hit, trial stops
+                                        else if ((trialManager.isTrialRunning && hit.collider.name == "sphere") || (trialManager.isTrialRunning && hit.collider.name == "rec")) // side target hit, trial stops
                                         {
                                                 StopTrial(true); // hit success
                                         }
@@ -107,6 +107,11 @@ public class mainmanager : MonoBehaviour
                                 else if (trialManager.isTrialRunning && !hit.collider.CompareTag("orb")) // hit no traget, but only counts if trial is running
                                 {
                                         StopTrial(false); // hit fail
+                                        Debug.Log(hit.collider.name + " hit, but no target");
+
+                                        // get the x,y,z position of the hit
+                                        hitPosition = hit.point;
+
                                 }
                         }
                 }
@@ -173,8 +178,11 @@ public class mainmanager : MonoBehaviour
         {
                 canCastSpell = false;
                 // TODO: auslagern 
+
+                shadowsParticle.transform.position = hitPosition;
                 shadowsParticle.SetActive(true);
 
+                explosionParticle.transform.position = hitPosition;
                 explosionParticle.SetActive(true);
                 yield return new WaitForSeconds(delay);
                 // TODO: auslagern 

@@ -116,6 +116,7 @@ public class targetmanager : MonoBehaviour
         public void HideAllOrbs()
         {
                 orb_middle.SetActive(false);
+                activeTargetObj.SetActive(false);
                 // orb_right.SetActive(false);
                 // orb_left.SetActive(false);
         }

@@ -129,7 +129,21 @@ public class trialmanager : MonoBehaviour
                 for (int i = 0; i < currentMaxTrials / 2; i++)
                 {
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Left));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Right));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Top));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Bottom));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.TopLeft));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.TopRight));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.BottomLeft));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.BottomRight));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Left));
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Right));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Top));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Bottom));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.TopLeft));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.TopRight));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.BottomLeft));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.BottomRight));
                 }
 
                 // shuffle trial order Fisher-Yates algorithm
