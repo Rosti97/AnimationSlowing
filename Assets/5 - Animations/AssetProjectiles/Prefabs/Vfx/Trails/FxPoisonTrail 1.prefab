@@ -5149,9 +5149,10 @@ GameObject:
   - component: {fileID: 5676961787351389899}
   - component: {fileID: 5676961787351389900}
   - component: {fileID: 833221636564421496}
+  - component: {fileID: 708488861479211484}
   - component: {fileID: 6412377008781837389}
   m_Layer: 0
-  m_Name: FxPoisonTrail
+  m_Name: FxPoisonTrail 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5215,6 +5216,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &708488861479211484
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5676961787351389898}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!210 &6412377008781837389
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -5305,7 +5333,7 @@ TrailRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Time: 0.15
-  m_PreviewTimeScale: 0
+  m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.2
@@ -5313,17 +5341,17 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.02431488
-        value: 0.10496417
-        inSlope: 3.1121068
-        outSlope: 3.1121068
+        time: 0
+        value: 0.16746417
+        inSlope: 10.872649
+        outSlope: 10.872649
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
-        outWeight: 0.25975004
+        outWeight: 0.08965518
       - serializedVersion: 3
-        time: 0.9253494
-        value: 0.75
+        time: 0.2110626
+        value: 1.0047847
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -5335,9 +5363,9 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.42341885, g: 0.6886792, b: 0.18516374, a: 0}
-      key1: {r: 0.29676166, g: 0.5471698, b: 0.25551796, a: 1}
-      key2: {r: 0.020394232, g: 0.14150941, b: 0, a: 0}
+      key0: {r: 0.7757918, g: 0.990566, b: 0, a: 0}
+      key1: {r: 0.053642772, g: 0.38679248, b: 0, a: 1}
+      key2: {r: 0.020394232, g: 0.14150941, b: 0, a: 1}
       key3: {r: 0.5377358, g: 0, b: 0.27837902, a: 0}
       key4: {r: 0.19752827, g: 0, b: 0.3773585, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
@@ -5352,17 +5380,17 @@ TrailRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 26600
-      atime2: 65535
+      atime1: 10216
+      atime2: 39707
       atime3: 65535
       atime4: 65535
       atime5: 0
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: 0
+      m_ColorSpace: -1
       m_NumColorKeys: 3
-      m_NumAlphaKeys: 3
+      m_NumAlphaKeys: 4
     numCornerVertices: 6
     numCapVertices: 0
     alignment: 0

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Data.Common;
 using System.Numerics;
 using TrialInfo = trialmanager.TrialInfo;
+using AssetProjectiles;
 
 public class mainmanager : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class mainmanager : MonoBehaviour
         private trialmanager trialManager;
         private trackingmanager trackingManager;
         private targetmanager targetManager;
+        // NOTE: TEST
+        private ProjectileTest projectileTest;
 
         private GameObject activeOrbObj;
         private float startRT;
@@ -36,7 +39,7 @@ public class mainmanager : MonoBehaviour
         public GameObject shadowsParticle;
         public GameObject explosionParticle;
 
-        private UnityEngine.Vector3 hitPosition = new UnityEngine.Vector3(1,1,1); // position of the hit target
+        private UnityEngine.Vector3 hitPosition = new UnityEngine.Vector3(1, 1, 1); // position of the hit target
         void Start()
         {
                 // get the scriptmanagers
@@ -47,6 +50,9 @@ public class mainmanager : MonoBehaviour
                 trialManager = GetComponent<trialmanager>();
                 targetManager = GetComponent<targetmanager>();
                 trackingManager = GetComponent<trackingmanager>();
+
+                // NOTE: TEST
+                projectileTest = GetComponent<ProjectileTest>();
 
 
                 // register to events
@@ -89,6 +95,7 @@ public class mainmanager : MonoBehaviour
                         {
                                 animationManager.PlayAnimation();
                                 soundManager.PlayShootSound();
+                                projectileTest.StartFiring(hit.point); // NOTE: TEST
 
                                 if (hit.collider.CompareTag("orb"))
                                 {
@@ -98,17 +105,19 @@ public class mainmanager : MonoBehaviour
                                                 trialManager.PrepareTrial();
                                                 eventTriggered = true;
                                                 trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.middleTargetClick);
+                                                // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         }
                                         else if ((trialManager.isTrialRunning && hit.collider.name == "sphere") || (trialManager.isTrialRunning && hit.collider.name == "rec")) // side target hit, trial stops
                                         {
                                                 StopTrial(true); // hit success
+                                                // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         }
                                 }
                                 else if (trialManager.isTrialRunning && !hit.collider.CompareTag("orb")) // hit no traget, but only counts if trial is running
                                 {
                                         StopTrial(false); // hit fail
                                         Debug.Log(hit.collider.name + " hit, but no target");
-
+                                        // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         // get the x,y,z position of the hit
                                         hitPosition = hit.point;
 

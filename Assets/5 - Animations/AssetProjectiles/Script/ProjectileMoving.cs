@@ -14,12 +14,12 @@ namespace AssetProjectiles
 
         void Start()
         {
-            if (muzzle != null)
-            {
-                var muzzleFx = Instantiate(muzzle, transform.position, Quaternion.identity);
-                muzzleFx.transform.forward = gameObject.transform.forward;
-                Destroy(muzzleFx, 3f);
-            }
+            // if (muzzle != null)
+            // {
+            //     var muzzleFx = Instantiate(muzzle, transform.position, Quaternion.identity);
+            //     muzzleFx.transform.forward = gameObject.transform.forward;
+            //     Destroy(muzzleFx, 3f);
+            // }
         }
 
         void Update()
@@ -32,16 +32,16 @@ namespace AssetProjectiles
 
         void OnCollisionEnter(Collision collision)
         {
-            speed = 0;
+            // speed = 0;
 
-            if (hit != null)
-            {
-                ContactPoint contact = collision.contacts[0];
-                var hitFx = Instantiate(hit, contact.point, Quaternion.LookRotation(contact.normal));
-                Destroy(hitFx, 3f);
-            }
+            // if (hit != null)
+            // {
+            //     ContactPoint contact = collision.contacts[0];
+            //     var hitFx = Instantiate(hit, contact.point, Quaternion.LookRotation(contact.normal));
+            //     Destroy(hitFx, 3f);
+            // }
 
-            StartCoroutine(DestroyProjectileAfterDelay());
+            // StartCoroutine(DestroyProjectileAfterDelay());
         }
 
         IEnumerator DestroyProjectileAfterDelay()
