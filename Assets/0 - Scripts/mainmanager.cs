@@ -105,7 +105,8 @@ public class mainmanager : MonoBehaviour
                                         if (!trialManager.isTrialRunning && hit.collider.name == "middleOrb") // middle target hit, trial starts
                                         {
                                                 // sets up the trial and calls start-event
-                                                currentHitPoint = hit.collider.transform.position;
+                                                currentHitPoint = hit.collider.transform.position; // kann wahrscheinlich raus
+                                                animationManager.StartGlowing();
                                                 trialManager.PrepareTrial();
                                                 eventTriggered = true;
                                                 trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.middleTargetClick);
@@ -152,6 +153,8 @@ public class mainmanager : MonoBehaviour
 
                 TrialInfo activeOrb = trialManager.GetCurrentTargetInfo();
                 float delay = trialManager.GetDelay(activeOrb);
+
+                animationManager.StopGlowing();
 
 
                 eventTriggered = true;
