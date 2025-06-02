@@ -7,6 +7,7 @@ using System.Data.Common;
 using System.Numerics;
 using TrialInfo = trialmanager.TrialInfo;
 using AssetProjectiles;
+using UnityEngine.Rendering;
 
 public class mainmanager : MonoBehaviour
 {
@@ -39,7 +40,9 @@ public class mainmanager : MonoBehaviour
         public GameObject shadowsParticle;
         public GameObject explosionParticle;
 
-        private UnityEngine.Vector3 hitPosition = new UnityEngine.Vector3(1, 1, 1); // position of the hit target
+        private UnityEngine.Vector3 currentHitPoint;
+
+        //private UnityEngine.Vector3 hitPosition = new UnityEngine.Vector3(1, 1, 1); // position of the hit target
         void Start()
         {
                 // get the scriptmanagers
@@ -102,6 +105,7 @@ public class mainmanager : MonoBehaviour
                                         if (!trialManager.isTrialRunning && hit.collider.name == "middleOrb") // middle target hit, trial starts
                                         {
                                                 // sets up the trial and calls start-event
+                                                currentHitPoint = hit.collider.transform.position;
                                                 trialManager.PrepareTrial();
                                                 eventTriggered = true;
                                                 trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.middleTargetClick);
@@ -109,17 +113,18 @@ public class mainmanager : MonoBehaviour
                                         }
                                         else if ((trialManager.isTrialRunning && hit.collider.name == "sphere") || (trialManager.isTrialRunning && hit.collider.name == "rec")) // side target hit, trial stops
                                         {
+                                                currentHitPoint = hit.collider.transform.position;
                                                 StopTrial(true); // hit success
-                                                // projectileTest.StartFiring(hit.point); // NOTE: TEST
+                                                                 // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         }
                                 }
                                 else if (trialManager.isTrialRunning && !hit.collider.CompareTag("orb")) // hit no traget, but only counts if trial is running
                                 {
+                                        currentHitPoint = hit.point;
                                         StopTrial(false); // hit fail
                                         Debug.Log(hit.collider.name + " hit, but no target");
                                         // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         // get the x,y,z position of the hit
-                                        hitPosition = hit.point;
 
                                 }
                         }
@@ -188,12 +193,14 @@ public class mainmanager : MonoBehaviour
                 canCastSpell = false;
                 // TODO: auslagern 
 
-                shadowsParticle.transform.position = hitPosition;
+                shadowsParticle.transform.position = currentHitPoint;
                 shadowsParticle.SetActive(true);
 
-                explosionParticle.transform.position = hitPosition;
-                explosionParticle.SetActive(true);
+
+
                 yield return new WaitForSeconds(delay);
+                explosionParticle.transform.position = currentHitPoint;
+                explosionParticle.SetActive(true);
                 // TODO: auslagern 
 
                 targetManager.HideAllOrbs();
