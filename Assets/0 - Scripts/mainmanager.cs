@@ -196,11 +196,9 @@ public class mainmanager : MonoBehaviour
                 canCastSpell = false;
                 // TODO: auslagern 
 
+
                 shadowsParticle.transform.position = currentHitPoint;
                 shadowsParticle.SetActive(true);
-
-
-
                 yield return new WaitForSeconds(delay);
                 explosionParticle.transform.position = currentHitPoint;
                 explosionParticle.SetActive(true);
