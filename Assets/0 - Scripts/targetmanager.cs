@@ -10,23 +10,23 @@ public class targetmanager : MonoBehaviour
         public GameObject orb_middle;
 
         // Neue GameObjects für die 8 Positionen und 2 Formen
-        public GameObject sphereTopLeft;
+        // public GameObject sphereTopLeft;
         public GameObject sphereTop;
-        public GameObject sphereTopRight;
+        // public GameObject sphereTopRight;
         public GameObject sphereLeft;
         public GameObject sphereRight;
-        public GameObject sphereBottomLeft;
+        // public GameObject sphereBottomLeft;
         public GameObject sphereBottom;
-        public GameObject sphereBottomRight;
+        // public GameObject sphereBottomRight;
 
-        public GameObject recTopLeft;
+        // public GameObject recTopLeft;
         public GameObject recTop;
-        public GameObject recTopRight;
+        // public GameObject recTopRight;
         public GameObject recLeft;
         public GameObject recRight;
-        public GameObject recBottomLeft;
+        // public GameObject recBottomLeft;
         public GameObject recBottom;
-        public GameObject recBottomRight;
+        // public GameObject recBottomRight;
 
         // Dictionaries for each shape
         private Dictionary<TrialInfo.TrialPosition, GameObject> dictSpheres;
@@ -47,26 +47,26 @@ public class targetmanager : MonoBehaviour
                 // initialize the dictionaries
                 dictRects = new Dictionary<TrialInfo.TrialPosition, GameObject>
                 {
-                        { TrialInfo.TrialPosition.TopLeft, recTopLeft },
+                        // { TrialInfo.TrialPosition.TopLeft, recTopLeft },
                         { TrialInfo.TrialPosition.Top, recTop },
-                        { TrialInfo.TrialPosition.TopRight, recTopRight },
+                        // { TrialInfo.TrialPosition.TopRight, recTopRight },
                         { TrialInfo.TrialPosition.Left, recLeft },
                         { TrialInfo.TrialPosition.Right, recRight },
-                        { TrialInfo.TrialPosition.BottomLeft, recBottomLeft },
+                        // { TrialInfo.TrialPosition.BottomLeft, recBottomLeft },
                         { TrialInfo.TrialPosition.Bottom, recBottom },
-                        { TrialInfo.TrialPosition.BottomRight, recBottomRight }
+                        // { TrialInfo.TrialPosition.BottomRight, recBottomRight }
                 };
 
                 dictSpheres = new Dictionary<TrialInfo.TrialPosition, GameObject>
                 {
-                        { TrialInfo.TrialPosition.TopLeft, sphereTopLeft },
+                        // { TrialInfo.TrialPosition.TopLeft, sphereTopLeft },
                         { TrialInfo.TrialPosition.Top, sphereTop },
-                        { TrialInfo.TrialPosition.TopRight, sphereTopRight },
+                        // { TrialInfo.TrialPosition.TopRight, sphereTopRight },
                         { TrialInfo.TrialPosition.Left, sphereLeft },
                         { TrialInfo.TrialPosition.Right, sphereRight },
-                        { TrialInfo.TrialPosition.BottomLeft, sphereBottomLeft },
+                        // { TrialInfo.TrialPosition.BottomLeft, sphereBottomLeft },
                         { TrialInfo.TrialPosition.Bottom, sphereBottom },
-                        { TrialInfo.TrialPosition.BottomRight, sphereBottomRight }
+                        // { TrialInfo.TrialPosition.BottomRight, sphereBottomRight }
                 };
         }
 

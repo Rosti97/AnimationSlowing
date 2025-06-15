@@ -37,10 +37,18 @@ public class mainmanager : MonoBehaviour
         private bool targetAppeared = false;
 
         // TODO: auslagern
-        public GameObject shadowsParticle;
-        public GameObject explosionParticle;
-
+        public GameObject shadowsParticleSphere;
+        public GameObject explosionParticleSphere;
+        
+        public GameObject shadowsParticleRec;
+        public GameObject explosionParticleRec;
+        private GameObject currentShadows; // current shadows particle system
+        private GameObject currentExplosion; // current explosion particle system
         private UnityEngine.Vector3 currentHitPoint;
+        // private var shadowsParticleSystem;
+        // private var explosionParticleSystem;
+        public Color sphereColor = new Color(0.9f, 0.0f, 0f, 1f); // color of the sphere target
+        public Color recColor = new Color(0f, 0f, 1f, 1f); // color of the rectangle target
 
         //private UnityEngine.Vector3 hitPosition = new UnityEngine.Vector3(1, 1, 1); // position of the hit target
         void Start()
@@ -56,6 +64,9 @@ public class mainmanager : MonoBehaviour
 
                 // NOTE: TEST
                 projectileTest = GetComponent<ProjectileTest>();
+
+                currentExplosion = explosionParticleSphere; // set default particle system
+                currentShadows = shadowsParticleSphere; // set default particle system
 
 
                 // register to events
@@ -98,7 +109,7 @@ public class mainmanager : MonoBehaviour
                         {
                                 animationManager.PlayAnimation();
                                 soundManager.PlayShootSound();
-                                projectileTest.StartFiring(hit.point); // NOTE: TEST
+                                // projectileTest.StartFiring(hit.point); // NOTE: TEST
 
                                 if (hit.collider.CompareTag("orb"))
                                 {
@@ -152,6 +163,8 @@ public class mainmanager : MonoBehaviour
                 currRT = endRT - startRT;
 
                 TrialInfo activeOrb = trialManager.GetCurrentTargetInfo();
+                Color currentColor = activeOrb.Shape == TrialInfo.TrialShape.Sphere ? sphereColor : recColor;
+
                 float delay = trialManager.GetDelay(activeOrb);
 
                 animationManager.StopGlowing();
@@ -187,28 +200,51 @@ public class mainmanager : MonoBehaviour
 
                 uiManager.UpdateInGameUI(true, currRT, trialManager.currentTrial, trialManager.currentMaxTrials);
 
-                StartCoroutine(HideOrbWithDelay(delay));
+                StartCoroutine(HideOrbWithDelay(delay, activeOrb));
         }
 
         // called in StopTrial() with first hit after middle target
-        public IEnumerator HideOrbWithDelay(float delay)
+        public IEnumerator HideOrbWithDelay(float delay, TrialInfo targetInfo = null)
         {
                 canCastSpell = false;
-                // TODO: auslagern 
-
-
-                shadowsParticle.transform.position = currentHitPoint;
-                shadowsParticle.SetActive(true);
-                yield return new WaitForSeconds(delay);
-                explosionParticle.transform.position = currentHitPoint;
-                explosionParticle.SetActive(true);
-                // TODO: auslagern 
 
                 targetManager.HideAllOrbs();
                 soundManager.PlayHitSound();
 
+                currentShadows = targetInfo.Shape == TrialInfo.TrialShape.Sphere ? shadowsParticleSphere : shadowsParticleRec;
+                currentExplosion = targetInfo.Shape == TrialInfo.TrialShape.Sphere ? explosionParticleSphere : explosionParticleRec;
 
-                // trackingManager.isTrackingMouseData = false; // stop mouse tracking
+                currentShadows.transform.position = currentHitPoint;
+                currentShadows.transform.localScale = UnityEngine.Vector3.zero;
+                currentShadows.SetActive(true);
+                // // hier größer werden lassen?
+                // shadowsParticle.SetActive(true);
+
+                // yield return new WaitForSeconds(delay);
+
+                // shadowsParticle.transform.localScale = UnityEngine.Vector3.zero;
+                // shadowsParticle.SetActive(true);
+
+                // Animate growth
+                float t = 0f;
+                while (t < delay)
+                {
+                        t += Time.deltaTime;
+                        float progress = t / delay;
+                        currentShadows.transform.localScale = UnityEngine.Vector3.Lerp(UnityEngine.Vector3.zero, UnityEngine.Vector3.one, progress);
+                        yield return null;
+                }
+
+                currentExplosion.transform.position = currentHitPoint;
+
+                currentExplosion.transform.position = currentHitPoint;
+                currentExplosion.SetActive(true);
+
+
+                // targetManager.HideAllOrbs();
+                // soundManager.PlayHitSound();
+
+
 
                 // then wait for stimulus time?
                 yield return new WaitForSeconds(trialManager.stimulusTime);
@@ -216,6 +252,7 @@ public class mainmanager : MonoBehaviour
                 // shadowsParticle.SetActive(false);
                 // explosionParticle.SetActive(false);
 
+                // NOTE: das auslagern auf "ExplosionDone" oder so
                 trialManager.StopTrial();
 
                 canCastSpell = true;
@@ -239,8 +276,10 @@ public class mainmanager : MonoBehaviour
                 // trackingManager.currentPhase = trackingmanager.TrackingPhase.startClick;
                 // trackingManager.updateMouseTracking(); // update mouse tracking
 
-                shadowsParticle.SetActive(false);
-                explosionParticle.SetActive(false);
+                currentShadows.SetActive(false);
+                currentExplosion.SetActive(false);
+
+                
                 targetManager.HideAllOrbs();
                 soundManager.PlayHitSound();
                 StartCoroutine(PreTargetStimulusTime(activeOrb));
