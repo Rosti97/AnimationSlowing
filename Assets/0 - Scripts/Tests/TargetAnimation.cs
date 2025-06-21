@@ -10,6 +10,7 @@ public class TargetBehaviour : MonoBehaviour
 
     public float shadowDelay = 0.3f; // sphere = kurz, rec = lang
     public float multiplier = 1f;
+    public float endScale = 3f;
 
     private DissolveEffect dissolve;
     private ExplosionAnim explAnim;
@@ -17,7 +18,7 @@ public class TargetBehaviour : MonoBehaviour
     private float startTime = 0f;
     private float endTime = 0f;
 
-    private void Awake()
+    public void Start()
     {
         dissolve = GetComponent<DissolveEffect>();
         dissolve.OnDissolveEnd += HandleDissolveEnd;
@@ -25,11 +26,12 @@ public class TargetBehaviour : MonoBehaviour
         //explAnim.OnExplosionEnd += HandleExplosionEnd;
     }
 
-    private void OnMouseDown()
-    {
-        dissolve.StartDissolving();
-        startTime = Time.time;
-    }
+    // private void OnMouseDown()
+    // {
+    //     dissolve.StartDissolving();
+    //     startTime = Time.time;
+    //     Debug.Log("Start: " + startTime);
+    // }
 
     private void HandleDissolveEnd()
     {
@@ -40,6 +42,7 @@ public class TargetBehaviour : MonoBehaviour
     {
         shadowObject.SetActive(true);
         StartCoroutine(GrowShadow(shadowObject, shadowDelay));
+        // Debug.Log("End: " + Time.time);
     }
     private IEnumerator ShadowThenExplosion()
     {
@@ -52,46 +55,38 @@ public class TargetBehaviour : MonoBehaviour
 
         yield return new WaitForSeconds(shadowDelay);
 
-        
-        float timestamp = Time.time;
-        Debug.Log("Expl Start: " + (timestamp - startTime));
-
         if (explosionObject != null)
             explosionObject.SetActive(true);
 
 
-        yield return new WaitForSeconds(0.5f);
+        // yield return new WaitForSeconds(0.5f);
         shadowObject.SetActive(false);
-        yield return new WaitForSeconds(1.5f);
-
-        // Deaktiviere das ganze Target-GameObject
+        // yield return new WaitForSeconds(1.5f);
 
         gameObject.SetActive(false);
-        explosionObject.SetActive(false);
+        // explosionObject.SetActive(false);
         dissolve.ResetDissolve();
-
     }
+
 
     private IEnumerator GrowShadow(GameObject target, float duration)
     {
         if (isLong)
         {
+            float scaler = 0f;
+            Vector3 startScaleVector = Vector3.one;
+            Vector3 endScaleVector = new Vector3(endScale, endScale, 1);
 
-            float t = 0f;
-            Vector3 startScale = Vector3.one;
-            Vector3 endScale = new Vector3(3, 3, 1); // Z bleibt gleich
+            target.transform.localScale = startScaleVector;
 
-
-            target.transform.localScale = startScale;
-
-            while (t < 5f)
+            while (scaler < 1f)
             {
-                t += Time.deltaTime / duration;
-                target.transform.localScale = Vector3.Lerp(startScale, endScale, t);
+                scaler += Time.deltaTime / (duration * multiplier);
+                target.transform.localScale = Vector3.Lerp(startScaleVector, endScaleVector, scaler);
                 yield return null;
             }
+            target.transform.localScale = endScaleVector;
 
-            target.transform.localScale = endScale;
         }
     }
 }

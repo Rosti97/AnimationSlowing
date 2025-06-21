@@ -1,11 +1,13 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class trialmanager : MonoBehaviour
 {
         // important stuff for the trial
-        public int numTargetPerShape = 28;
-        public int numTargetPerPosition = 2;
+        public int numTargetPerShape = 7;
+        public int numPositions = 4;
+        public int numShapes = 2; 
         public int maxTrials = 56; // maximum trials per round
         public int maxRounds = 8;
         public int practiceTrials = 10;
@@ -77,10 +79,12 @@ public class trialmanager : MonoBehaviour
         public void Start()
         {
                 // get the scriptmanagers
-                maxTrials = numTargetPerShape * 2; // 28 spheres and 28 recs
+                maxTrials = numShapes * numPositions * numTargetPerShape; // with 7 targets per shape and 4 positions, we have 56 trials
                 targetManager = GetComponent<targetmanager>();
                 // trackingManager = GetComponent<trackingmanager>();
                 fpsCounter = GetComponent<fpscounter>();
+                mainmanager.Instance.OnExplosionEnd.AddListener(StopTrial);
+                mainmanager.Instance.OnMiddleEnd.AddListener(StartTrial);
         }
 
         // sets trials for practice round
@@ -121,29 +125,19 @@ public class trialmanager : MonoBehaviour
         // creates a randomized trial order
         public void GenerateTrialOrder()
         {
-                // list with 30 left and 30 right orbs (not shuffled)
+                // list
                 trialOrder = new List<TrialInfo>();
 
-                // TODO: shuffle trial order with 50% spheres and 50% rectangles
-                // TODO: and a predefined trial per position
                 for (int i = 0; i < currentMaxTrials / 2; i++)
                 {
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Left));
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Right));
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Top));
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Bottom));
-                        // trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.TopLeft));
-                        // trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.TopRight));
-                        // trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.BottomLeft));
-                        // trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.BottomRight));
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Left));
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Right));
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Top));
                         trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Bottom));
-                        // trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.TopLeft));
-                        // trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.TopRight));
-                        // trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.BottomLeft));
-                        // trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.BottomRight));
                 }
 
                 // shuffle trial order Fisher-Yates algorithm
@@ -168,17 +162,32 @@ public class trialmanager : MonoBehaviour
                 currentTargetInfo = trialOrder[currentTrial]; // NOTE: nur uebergangsweise
                 currentTrial++;
 
-                OnTrialStarted?.Invoke(currentTargetInfo); // start trial with next side target
+                // should only be called when middle orb is dissolved
+                // OnTrialStarted?.Invoke(currentTargetInfo); // start trial with next side target
+        }
 
+        private void StartTrial()
+        {
+                OnTrialStarted?.Invoke(currentTargetInfo);
         }
 
         // called in mainmanager after first in in running trial
         // after disappearing of side target (see HideOrbWithDelay())
         public void StopTrial()
         {
+                Debug.Log("Stop Trial called");
                 isTrialRunning = false;
 
+                StartCoroutine(stimulusTimer()); // start timer for stimulus time
+
                 // starts end-trial-event
+
+        }
+
+        private IEnumerator stimulusTimer()
+        {
+                yield return new WaitForSeconds(stimulusTime);
+
                 OnTrialEnded?.Invoke(currentTargetInfo);
 
                 // isTrackingRunning = false;
@@ -202,8 +211,6 @@ public class trialmanager : MonoBehaviour
                                 OnRoundEnded?.Invoke(); // round is finished
                         }
                 }
-
-
         }
 
         // returns delay for the current orb
@@ -236,7 +243,7 @@ public class trialmanager : MonoBehaviour
                 }
                 return shortDelay; // default short delay
 
-                
+
 
 
 

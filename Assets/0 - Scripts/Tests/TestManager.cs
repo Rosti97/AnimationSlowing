@@ -12,28 +12,30 @@ public GameObject recObject;       // Referenz auf vorhandenes Rechteck
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            sphereObject.SetActive(true);
+            // sphereObject.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            recObject.SetActive(true);
+            // recObject.SetActive(true);
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             //middleObject.SetActive(true);
-            upObject.SetActive(true);
+            // upObject.SetActive(true);
+            upObject.GetComponent<DissolveEffect>().StartDissolving();
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            downObject.SetActive(true);
+            // downObject.SetActive(true);
+            downObject.GetComponent<DissolveEffect>().StartDissolving();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            middleObject.SetActive(true);
+            // middleObject.SetActive(true);
         }
 }
 

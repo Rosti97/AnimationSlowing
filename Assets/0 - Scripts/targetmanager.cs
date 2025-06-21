@@ -4,29 +4,31 @@ using TrialInfo = trialmanager.TrialInfo;
 
 public class targetmanager : MonoBehaviour
 {
-        // public GameObject orb_middle;
-        // public GameObject orb_right;
-        // public GameObject orb_left;
+        // Für 8 Positionen
+        // public GameObject redTop;Left;
+        // public GameObject redTop;Right;
+        // public GameObject redBottomLeft;
+        // public GameObject redBottomRight;
+        // public GameObject blueTopLeft;
+        // public GameObject blueBottomLeft;
+        // public GameObject blueBottomRight;
+        // public GameObject blueTopRight;    
+
         public GameObject orb_middle;
 
-        // Neue GameObjects für die 8 Positionen und 2 Formen
-        // public GameObject sphereTopLeft;
-        public GameObject sphereTop;
-        // public GameObject sphereTopRight;
-        public GameObject sphereLeft;
-        public GameObject sphereRight;
-        // public GameObject sphereBottomLeft;
-        public GameObject sphereBottom;
-        // public GameObject sphereBottomRight;
+        public GameObject redTop;
+        public GameObject redLeft;
+        public GameObject redRight;
+        public GameObject redBottom;
 
-        // public GameObject recTopLeft;
-        public GameObject recTop;
-        // public GameObject recTopRight;
-        public GameObject recLeft;
-        public GameObject recRight;
-        // public GameObject recBottomLeft;
-        public GameObject recBottom;
-        // public GameObject recBottomRight;
+        public GameObject blueTop;
+        public GameObject blueLeft;
+        public GameObject blueRight;
+        public GameObject blueBottom;
+
+        public DissolveEffect currentDissolveEffect;
+        public DissolveEffect middleDissolveEffect;
+
 
         // Dictionaries for each shape
         private Dictionary<TrialInfo.TrialPosition, GameObject> dictSpheres;
@@ -34,50 +36,39 @@ public class targetmanager : MonoBehaviour
 
 
         private GameObject activeTargetObj;
-        // private TrialInfo middleTargetInfo = new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Top); // Default middle target
-        // private string activeTargetStr; // wird wohl eher zu Target[shape, position]
-
-        // public string getactiveTargetString() => activeTargetStr;
-        // public GameObject getactiveTargetObject() => activeTargetObj;
-
-        // private trialmanager trialManager;
 
         void Start()
         {
                 // initialize the dictionaries
                 dictRects = new Dictionary<TrialInfo.TrialPosition, GameObject>
                 {
-                        // { TrialInfo.TrialPosition.TopLeft, recTopLeft },
-                        { TrialInfo.TrialPosition.Top, recTop },
-                        // { TrialInfo.TrialPosition.TopRight, recTopRight },
-                        { TrialInfo.TrialPosition.Left, recLeft },
-                        { TrialInfo.TrialPosition.Right, recRight },
-                        // { TrialInfo.TrialPosition.BottomLeft, recBottomLeft },
-                        { TrialInfo.TrialPosition.Bottom, recBottom },
-                        // { TrialInfo.TrialPosition.BottomRight, recBottomRight }
+                        { TrialInfo.TrialPosition.Top, blueTop },
+                        { TrialInfo.TrialPosition.Left, blueLeft },
+                        { TrialInfo.TrialPosition.Right, blueRight },
+                        { TrialInfo.TrialPosition.Bottom, blueBottom },
                 };
 
                 dictSpheres = new Dictionary<TrialInfo.TrialPosition, GameObject>
                 {
-                        // { TrialInfo.TrialPosition.TopLeft, sphereTopLeft },
-                        { TrialInfo.TrialPosition.Top, sphereTop },
-                        // { TrialInfo.TrialPosition.TopRight, sphereTopRight },
-                        { TrialInfo.TrialPosition.Left, sphereLeft },
-                        { TrialInfo.TrialPosition.Right, sphereRight },
-                        // { TrialInfo.TrialPosition.BottomLeft, sphereBottomLeft },
-                        { TrialInfo.TrialPosition.Bottom, sphereBottom },
-                        // { TrialInfo.TrialPosition.BottomRight, sphereBottomRight }
+                        { TrialInfo.TrialPosition.Top, redTop },
+                        { TrialInfo.TrialPosition.Left, redLeft },
+                        { TrialInfo.TrialPosition.Right, redRight },
+                        { TrialInfo.TrialPosition.Bottom, redBottom },
                 };
         }
 
+        // TODO: searching for occurrence
         public void ShowMiddleOrb()
         {
+                if (middleDissolveEffect == null)
+                {
+                        middleDissolveEffect = orb_middle.GetComponent<DissolveEffect>();
+                }
                 orb_middle.SetActive(true);
                 activeTargetObj = orb_middle;
-                
-                // activeTargetStr = "middle";
         }
 
+        // could be more cleaned up, but this is a quick solution
         public void ShowTargetOrb(TrialInfo activeTarget)
         {
                 // show the target based on shape and position
@@ -87,7 +78,8 @@ public class targetmanager : MonoBehaviour
                         {
                                 targetObj.SetActive(true);
                                 activeTargetObj = targetObj;
-                                // activeTargetStr = activeTarget.Position.ToString();
+
+                                currentDissolveEffect = targetObj.GetComponent<DissolveEffect>();
                         }
                 }
                 else if (activeTarget.Shape == TrialInfo.TrialShape.Rectangle)
@@ -96,29 +88,29 @@ public class targetmanager : MonoBehaviour
                         {
                                 targetObj.SetActive(true);
                                 activeTargetObj = targetObj;
-                                // activeTargetStr = activeTarget.Position.ToString();
+
+                                currentDissolveEffect = targetObj.GetComponent<DissolveEffect>();
                         }
                 }
-
-                // activeTargetStr = side;
-                // if (side == "right")
-                // {
-                //         orb_right.SetActive(true);
-                //         activeTargetObj = orb_right;
-                // }
-                // else if (side == "left")
-                // {
-                //         orb_left.SetActive(true);
-                //         activeTargetObj = orb_left;
-                // }
         }
 
-        public void HideAllOrbs()
+        // public void HideAllOrbs()
+        // {
+        //         orb_middle.SetActive(false);
+        //         activeTargetObj.SetActive(false);
+        // }
+
+        public void HideTargetOrb()
         {
-                orb_middle.SetActive(false);
-                activeTargetObj.SetActive(false);
-                // orb_right.SetActive(false);
-                // orb_left.SetActive(false);
+                // activeTargetObj.SetActive(false);
+                currentDissolveEffect.StartDissolving();
+                activeTargetObj = null;
+        }
+
+        public void HideMiddleOrb()
+        {
+                // orb_middle.SetActive(false);
+                middleDissolveEffect.StartDissolving();
         }
 
         void HandleTrialStart(string side)

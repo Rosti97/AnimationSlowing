@@ -8,9 +8,14 @@ using System.Numerics;
 using TrialInfo = trialmanager.TrialInfo;
 using AssetProjectiles;
 using UnityEngine.Rendering;
+using UnityEngine.Events;
 
 public class mainmanager : MonoBehaviour
 {
+        public static mainmanager Instance { get; private set; }
+        public UnityEvent OnExplosionEnd;
+        public UnityEvent OnMiddleEnd;
+
         public Camera playerCamera;
         public GameObject FPSController;
 
@@ -29,30 +34,27 @@ public class mainmanager : MonoBehaviour
         private float startRT;
         private float endRT;
         private float currRT;
-        // private float mouse_x;
-        // private float mouse_y;
         private bool canCastSpell = false; // assure that the player can only cast a spell once per click
         private bool eventTriggered = false;
         private UnityEngine.Vector2 mouseDelta;
         private bool targetAppeared = false;
 
-        // TODO: auslagern
-        public GameObject shadowsParticleSphere;
-        public GameObject explosionParticleSphere;
-        
-        public GameObject shadowsParticleRec;
-        public GameObject explosionParticleRec;
-        private GameObject currentShadows; // current shadows particle system
-        private GameObject currentExplosion; // current explosion particle system
         private UnityEngine.Vector3 currentHitPoint;
-        // private var shadowsParticleSystem;
-        // private var explosionParticleSystem;
+
         public Color sphereColor = new Color(0.9f, 0.0f, 0f, 1f); // color of the sphere target
         public Color recColor = new Color(0f, 0f, 1f, 1f); // color of the rectangle target
+
+        void Awake()
+        {
+                Instance = this;
+                DontDestroyOnLoad(gameObject); // set the instance to this
+        }
 
         //private UnityEngine.Vector3 hitPosition = new UnityEngine.Vector3(1, 1, 1); // position of the hit target
         void Start()
         {
+
+
                 // get the scriptmanagers
                 animationManager = GetComponent<animationmanager>();
                 soundManager = GetComponent<soundmanager>();
@@ -63,18 +65,13 @@ public class mainmanager : MonoBehaviour
                 trackingManager = GetComponent<trackingmanager>();
 
                 // NOTE: TEST
-                projectileTest = GetComponent<ProjectileTest>();
-
-                currentExplosion = explosionParticleSphere; // set default particle system
-                currentShadows = shadowsParticleSphere; // set default particle system
-
+                // projectileTest = GetComponent<ProjectileTest>();
 
                 // register to events
                 trialManager.OnTrialStarted += HandleTrialStart;
                 trialManager.OnTrialEnded += HandleTrialEnd;
                 trialManager.OnRoundEnded += HandleRoundEnd;
                 trialManager.OnGameEnded += HandleGameEnd;
-
 
                 // setup for the game
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
@@ -121,9 +118,12 @@ public class mainmanager : MonoBehaviour
                                                 trialManager.PrepareTrial();
                                                 eventTriggered = true;
                                                 trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.middleTargetClick);
+
+                                                soundManager.PlayMiddleSound();
+
                                                 // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         }
-                                        else if ((trialManager.isTrialRunning && hit.collider.name == "sphere") || (trialManager.isTrialRunning && hit.collider.name == "rec")) // side target hit, trial stops
+                                        else if ((trialManager.isTrialRunning && hit.collider.name == "red") || (trialManager.isTrialRunning && hit.collider.name == "blue")) // side target hit, trial stops
                                         {
                                                 currentHitPoint = hit.collider.transform.position;
                                                 StopTrial(true); // hit success
@@ -200,69 +200,59 @@ public class mainmanager : MonoBehaviour
 
                 uiManager.UpdateInGameUI(true, currRT, trialManager.currentTrial, trialManager.currentMaxTrials);
 
-                StartCoroutine(HideOrbWithDelay(delay, activeOrb));
+                // StartCoroutine(HideOrbWithDelay(delay, activeOrb));
+                HideOrbWithDelay(delay, activeOrb);
         }
 
-        // called in StopTrial() with first hit after middle target
-        public IEnumerator HideOrbWithDelay(float delay, TrialInfo targetInfo = null)
+        public void HideOrbWithDelay(float delay, TrialInfo targetInfo = null)
         {
                 canCastSpell = false;
 
-                targetManager.HideAllOrbs();
-                soundManager.PlayHitSound();
+                // targetManager.HideAllOrbs();
+                targetManager.HideTargetOrb();
 
-                currentShadows = targetInfo.Shape == TrialInfo.TrialShape.Sphere ? shadowsParticleSphere : shadowsParticleRec;
-                currentExplosion = targetInfo.Shape == TrialInfo.TrialShape.Sphere ? explosionParticleSphere : explosionParticleRec;
+                // soundManager.PlayHitSound();
+                // TODO play sound
+                // soundManager.PlaySound();
 
-                currentShadows.transform.position = currentHitPoint;
-                currentShadows.transform.localScale = UnityEngine.Vector3.zero;
-                currentShadows.SetActive(true);
-                // // hier größer werden lassen?
-                // shadowsParticle.SetActive(true);
+                // das muss zu onExplosionEnd
+                // trialManager.StopTrial();
 
-                // yield return new WaitForSeconds(delay);
+                // targetManager.HideAllOrbs();
+                // soundManager.PlayHitSound();
+        }
 
-                // shadowsParticle.transform.localScale = UnityEngine.Vector3.zero;
-                // shadowsParticle.SetActive(true);
+        // called in StopTrial() with first hit after middle target
+        public IEnumerator IHideOrbWithDelay(float delay, TrialInfo targetInfo = null)
+        {
+                canCastSpell = false;
 
-                // Animate growth
-                float t = 0f;
-                while (t < delay)
-                {
-                        t += Time.deltaTime;
-                        float progress = t / delay;
-                        currentShadows.transform.localScale = UnityEngine.Vector3.Lerp(UnityEngine.Vector3.zero, UnityEngine.Vector3.one, progress);
-                        yield return null;
-                }
+                // targetManager.HideAllOrbs();
+                targetManager.HideTargetOrb();
 
-                currentExplosion.transform.position = currentHitPoint;
+                // soundManager.PlayHitSound();
 
-                currentExplosion.transform.position = currentHitPoint;
-                currentExplosion.SetActive(true);
-
+                trialManager.StopTrial();
 
                 // targetManager.HideAllOrbs();
                 // soundManager.PlayHitSound();
 
-
-
                 // then wait for stimulus time?
                 yield return new WaitForSeconds(trialManager.stimulusTime);
 
-                // shadowsParticle.SetActive(false);
-                // explosionParticle.SetActive(false);
 
-                // NOTE: das auslagern auf "ExplosionDone" oder so
-                trialManager.StopTrial();
 
-                canCastSpell = true;
+                // trialManager.StopTrial();
 
-                if (trialManager.currentTrial < trialManager.currentMaxTrials)
-                {
-                        targetManager.ShowMiddleOrb();
-                }
+                // canCastSpell = true;
+
+                // if (trialManager.currentTrial < trialManager.currentMaxTrials)
+                // {
+                //         targetManager.ShowMiddleOrb();
+                // }
 
         }
+
 
         // gets called with trialmanager.PrepareTrial()
         // happens when middle target is hit
@@ -276,19 +266,23 @@ public class mainmanager : MonoBehaviour
                 // trackingManager.currentPhase = trackingmanager.TrackingPhase.startClick;
                 // trackingManager.updateMouseTracking(); // update mouse tracking
 
-                currentShadows.SetActive(false);
-                currentExplosion.SetActive(false);
+                // currentShadows.SetActive(false);
+                // currentExplosion.SetActive(false);
 
-                
-                targetManager.HideAllOrbs();
-                soundManager.PlayHitSound();
+
+                //targetManager.HideAllOrbs();
+                // targetManager.HideTargetOrb();
+                targetManager.HideMiddleOrb();
+
+
+                // soundManager.PlayHitSound();
                 StartCoroutine(PreTargetStimulusTime(activeOrb));
 
         }
 
         public IEnumerator PreTargetStimulusTime(TrialInfo activeOrb)
         {
-                trialManager.isWaitingPhase = true;                // TODO: hier muss maus tracking starten
+                trialManager.isWaitingPhase = true;
                 // trackingManager.isTrackingMouseData = true;
 
                 trackingManager.currentPhase = trackingmanager.TrackingPhase.waitingForTarget; // set tracking phase to waiting for target
@@ -308,8 +302,13 @@ public class mainmanager : MonoBehaviour
         // gets called with hiding of side target
         private void HandleTrialEnd(TrialInfo activeOrb)
         {
-                // here happens nothing right now
-                // maybe handle mouse tracking here
+
+                canCastSpell = true;
+
+                if (trialManager.currentTrial < trialManager.currentMaxTrials)
+                {
+                        targetManager.ShowMiddleOrb();
+                }
 
         }
 

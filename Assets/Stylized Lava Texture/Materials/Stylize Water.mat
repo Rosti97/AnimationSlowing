@@ -85,11 +85,11 @@ Material:
     - _DissolveWidth: 0.05
     - _DstBlend: 0
     - _GlossMapScale: 0.514
-    - _Glossiness: 1
+    - _Glossiness: 0.3
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _NormalStrenght: 0.5
+    - _NormalStrenght: 0.8
     - _OcclusionStrength: 1
     - _Parallax: 0.08
     - _Shininess: 0.71

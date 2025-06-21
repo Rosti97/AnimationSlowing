@@ -5,11 +5,12 @@ using UnityEngine;
 public class ExplosionAnim : MonoBehaviour
 {
 
-    public event Action OnExplosionEnd;
+    private float delay = 0.4f;
+    // public event Action OnExplosionEnd;
     private ParticleSystem ps;
 
 
-    private void Start()
+    public void Start()
     {
         ps = GetComponent<ParticleSystem>();
 
@@ -17,43 +18,9 @@ public class ExplosionAnim : MonoBehaviour
         main.stopAction = ParticleSystemStopAction.Callback;
     }
 
-    public void StartExploding()
+    void OnDisable()
     {
-        gameObject.SetActive(true);
-
-        Debug.Log("START");
-
-        // if (ps != null)
-        // {
-        //     ps.Play();
-        //     StartCoroutine(WaitForExplosionEnd());
-        //}
+        mainmanager.Instance.OnExplosionEnd.Invoke();
     }
-
-    private IEnumerator WaitForExplosionEnd()
-    {
-        while (ps.IsAlive(true))
-        {
-            yield return null;
-        }
-
-        //OnExplosionEnd?.Invoke();
-        Debug.Log("END INVOKE");
-    }
-
-    void OnParticleSystemStopped()
-    {
-        IDK();
-        Debug.Log("System has stopped!");
-    }
-
-    private void IDK()
-    {
-        Debug.Log("Hey");
-        OnExplosionEnd?.Invoke();
-        Debug.Log("Ho");
-    }
-
-    // TODO Particlesystem on finish -> invoke on ExplosionEnd
 
 }
