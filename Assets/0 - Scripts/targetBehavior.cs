@@ -52,7 +52,7 @@ public class targetBehavior : MonoBehaviour
         if (isLong)
         {
             audioSource.PlayOneShot(bigHitSound);
-            Debug.Log("hit me baby one more time");
+            // Debug.Log("hit me baby one more time");
         }
         else
         {

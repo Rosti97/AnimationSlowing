@@ -49,7 +49,7 @@ public class soundmanager : MonoBehaviour
 
     public void PlayMiddleSound()
     {
-        soundSource.PlayOneShot(middleSound, 1f);
+        soundSource.PlayOneShot(middleSound, 0.7f);
     }
 
     public void PlayExplosionSound()

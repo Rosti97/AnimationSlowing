@@ -5,31 +5,31 @@ using System.Collections.Generic;
 public class trialmanager : MonoBehaviour
 {
         // important stuff for the trial
-        public int numTargetPerShape = 7;
+        public int numTargetPerColor = 7;
         public int numPositions = 4;
-        public int numShapes = 2; 
+        public int numColors = 2; 
         public int maxTrials = 56; // maximum trials per round
         public int maxRounds = 8;
         public int practiceTrials = 10;
         public enum ExperimentVersion
         {
-                SL, // Sphere long delay
+                BL, // Sphere long delay
                 RL // Rectangle long delay
         }
-        public ExperimentVersion version = ExperimentVersion.SL;
-        public float longDelay = 0.6f;
-        public float shortDelay = 0f;
+        public ExperimentVersion version = ExperimentVersion.BL;
+        public float longAnimation = 2f;
+        public float shortAnimation = 0.4f;
         public float stimulusTime = 0.4f;
 
-        // Custom class to hold target information (shape and position)
+        // Custom class to hold target information (Color and position)
         [System.Serializable] // Makes it visible in the Inspector
         public class TrialInfo
         {
                 // target information stuff
-                public enum TrialShape
+                public enum TrialColor
                 {
-                        Sphere,
-                        Rectangle
+                        Red,
+                        Blue
                 }
 
                 public enum TrialPosition
@@ -37,12 +37,12 @@ public class trialmanager : MonoBehaviour
                         Left, Top, Right, Bottom
                         //, TopLeft, TopRight, BottomLeft, BottomRight
                 }
-                public TrialShape Shape;
+                public TrialColor Color;
                 public TrialPosition Position;
 
-                public TrialInfo(TrialShape shape, TrialPosition position)
+                public TrialInfo(TrialColor color, TrialPosition position)
                 {
-                        Shape = shape;
+                        Color = color;
                         Position = position;
                 }
         }
@@ -79,7 +79,7 @@ public class trialmanager : MonoBehaviour
         public void Start()
         {
                 // get the scriptmanagers
-                maxTrials = numShapes * numPositions * numTargetPerShape; // with 7 targets per shape and 4 positions, we have 56 trials
+                maxTrials = numColors * numPositions * numTargetPerColor; // with 7 targets per Color and 4 positions, we have 56 trials
                 targetManager = GetComponent<targetmanager>();
                 // trackingManager = GetComponent<trackingmanager>();
                 fpsCounter = GetComponent<fpscounter>();
@@ -130,14 +130,14 @@ public class trialmanager : MonoBehaviour
 
                 for (int i = 0; i < currentMaxTrials / 2; i++)
                 {
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Left));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Right));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Top));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Sphere, TrialInfo.TrialPosition.Bottom));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Left));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Right));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Top));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialShape.Rectangle, TrialInfo.TrialPosition.Bottom));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Left));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Right));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Top));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Bottom));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Left));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Right));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Top));
+                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Bottom));
                 }
 
                 // shuffle trial order Fisher-Yates algorithm
@@ -175,7 +175,7 @@ public class trialmanager : MonoBehaviour
         // after disappearing of side target (see HideOrbWithDelay())
         public void StopTrial()
         {
-                Debug.Log("Stop Trial called");
+                // Debug.Log("Stop Trial called");
                 isTrialRunning = false;
 
                 StartCoroutine(stimulusTimer()); // start timer for stimulus time
@@ -216,32 +216,32 @@ public class trialmanager : MonoBehaviour
         // returns delay for the current orb
         public float GetDelay(TrialInfo activeOrbInfo)
         {
-                // return delay based on version and current shape from TrialInfo
-                if (version == ExperimentVersion.SL)
+                // return delay based on version and current Color from TrialInfo
+                if (version == ExperimentVersion.BL)
                 {
                         // Sphere long delay
-                        if (activeOrbInfo.Shape == TrialInfo.TrialShape.Sphere)
+                        if (activeOrbInfo.Color == TrialInfo.TrialColor.Blue)
                         {
-                                return longDelay; // long delay for spheres
+                                return longAnimation; // long delay for spheres
                         }
                         else
                         {
-                                return shortDelay; // short delay for rectangles
+                                return shortAnimation; // short delay for rectangles
                         }
                 }
                 else if (version == ExperimentVersion.RL)
                 {
                         // Rectangle long delay
-                        if (activeOrbInfo.Shape == TrialInfo.TrialShape.Rectangle)
+                        if (activeOrbInfo.Color == TrialInfo.TrialColor.Red)
                         {
-                                return longDelay; // long delay for rectangles
+                                return longAnimation; // long delay for rectangles
                         }
                         else
                         {
-                                return shortDelay; // short delay for spheres
+                                return shortAnimation; // short delay for spheres
                         }
                 }
-                return shortDelay; // default short delay
+                return shortAnimation; // default short delay
 
 
 
@@ -249,10 +249,10 @@ public class trialmanager : MonoBehaviour
 
 
                 // TODO: change to new versions and no rounds
-                //         if (currentRound > 8) return shortDelay; // short delay for all trials after 8 rounds
-                //         else if (version == "lld" && activeOrbStr == "left") return longDelay;
-                //         else if (version == "rld" && activeOrbStr == "right") return longDelay;
-                //         return shortDelay; // short
+                //         if (currentRound > 8) return shortAnimation; // short delay for all trials after 8 rounds
+                //         else if (version == "lld" && activeOrbStr == "left") return longAnimation;
+                //         else if (version == "rld" && activeOrbStr == "right") return longAnimation;
+                //         return shortAnimation; // short
         }
 
         public void UpdateTrackingPhase(string phase)

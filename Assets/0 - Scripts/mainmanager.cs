@@ -41,8 +41,9 @@ public class mainmanager : MonoBehaviour
 
         private UnityEngine.Vector3 currentHitPoint;
 
-        public Color sphereColor = new Color(0.9f, 0.0f, 0f, 1f); // color of the sphere target
-        public Color recColor = new Color(0f, 0f, 1f, 1f); // color of the rectangle target
+        // public Color sphereColor = new Color(0.9f, 0.0f, 0f, 1f); // color of the sphere target
+        // public Color recColor = new Color(0f, 0f, 1f, 1f); // color of the rectangle target
+        private bool trialSaved = false;
 
         void Awake()
         {
@@ -114,6 +115,7 @@ public class mainmanager : MonoBehaviour
                                         {
                                                 // sets up the trial and calls start-event
                                                 currentHitPoint = hit.collider.transform.position; // kann wahrscheinlich raus
+                                                trialSaved = false;
                                                 animationManager.StartGlowing();
                                                 trialManager.PrepareTrial();
                                                 eventTriggered = true;
@@ -126,6 +128,7 @@ public class mainmanager : MonoBehaviour
                                         else if ((trialManager.isTrialRunning && hit.collider.name == "red") || (trialManager.isTrialRunning && hit.collider.name == "blue")) // side target hit, trial stops
                                         {
                                                 currentHitPoint = hit.collider.transform.position;
+
                                                 StopTrial(true); // hit success
                                                                  // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         }
@@ -133,8 +136,10 @@ public class mainmanager : MonoBehaviour
                                 else if (trialManager.isTrialRunning && !hit.collider.CompareTag("orb")) // hit no traget, but only counts if trial is running
                                 {
                                         currentHitPoint = hit.point;
+
+                                        // TODO: track failure, but remain the target until clicked
                                         StopTrial(false); // hit fail
-                                        Debug.Log(hit.collider.name + " hit, but no target");
+                                        // Debug.Log(hit.collider.name + " hit, but no target");
                                         // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         // get the x,y,z position of the hit
 
@@ -159,49 +164,121 @@ public class mainmanager : MonoBehaviour
         // hitSuccess = true if the player hit the side target
         void StopTrial(bool hitSuccess)
         {
+                // endRT = Time.time;
+                // currRT = endRT - startRT;
+
+                //  TrialInfo activeOrb = trialManager.GetCurrentTargetInfo();
+                // // Color currentColor = activeOrb.Shape == TrialInfo.TrialShape.Sphere ? sphereColor : recColor;
+
+                // float delay = trialManager.GetDelay(activeOrb);
+
+                // if (hitSuccess && trialSaved) // save trial data only once
+                // {
+                //         Debug.Log("Trial already saved, skipping save.");
+                //         animationManager.StopGlowing();
+                //         HideOrbWithDelay(delay, activeOrb);
+                //         return;
+                // }
+                // else if (!hitSuccess && !trialSaved) // save trial data only once
+                // {
+                //         Debug.Log("Trial not saved, saving now.");
+                //         trialSaved = true; // set trialSaved to true to prevent multiple saves
+                // }
+                // else if (hitSuccess && !trialSaved)
+                // {
+                //         animationManager.StopGlowing();
+                //         HideOrbWithDelay(delay, activeOrb);
+                //         trialSaved = true;
+                //         Debug.Log("Trial saved successfully.");
+                // }
+
+
+                // eventTriggered = true;
+                // if (hitSuccess)
+                // {
+                //         trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.targetClick);
+                // }
+                // else
+                // {
+                //         trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.failedClick);
+                // }
+
+                // trackingManager.currentPhase = trackingmanager.TrackingPhase.endClick; // set tracking phase to end click
+                // trackingManager.isTrackingMouseData = false; // stop mouse tracking
+
+                // dataManager.AddTrialToData(
+                //         trialManager.currentRound,
+                //         trialManager.currentTrial,
+                //         trackingManager.GetMousePosition().x,
+                //         trackingManager.GetMousePosition().y,
+                //         activeOrb.Shape.ToString(),
+                //         activeOrb.Position.ToString(),
+                //         delay,
+                //         startRT,
+                //         endRT,
+                //         currRT,
+                //         hitSuccess ? 1 : 0);
+
+                // // Debug.Log($"Hit: {hitSuccess}, RT: {currRT}, Delay: {delay}");
+
+                // uiManager.UpdateInGameUI(true, currRT, trialManager.currentTrial, trialManager.currentMaxTrials);
+
+                // // StartCoroutine(HideOrbWithDelay(delay, activeOrb));
+                // // HideOrbWithDelay(delay, activeOrb);
+
+
+
+                 // Calculate reaction time
                 endRT = Time.time;
                 currRT = endRT - startRT;
 
+                // Get trial information
                 TrialInfo activeOrb = trialManager.GetCurrentTargetInfo();
-                Color currentColor = activeOrb.Shape == TrialInfo.TrialShape.Sphere ? sphereColor : recColor;
-
                 float delay = trialManager.GetDelay(activeOrb);
 
-                animationManager.StopGlowing();
 
-
-                eventTriggered = true;
+                // Always provide visual feedback
                 if (hitSuccess)
                 {
-                        trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.targetClick);
+                        animationManager.StopGlowing();
+                        HideOrbWithDelay(delay, activeOrb);
+                }
+
+                // Only save data if this trial hasn't been saved yet
+                if (!trialSaved)
+                {
+                        // Update tracking data
+                        var eventType = hitSuccess ? trackingmanager.EventTrigger.targetClick
+                                                  : trackingmanager.EventTrigger.failedClick;
+                        trackingManager.updateMouseTracking(mouseDelta, eventType);
+
+                        trackingManager.currentPhase = trackingmanager.TrackingPhase.endClick;
+                        trackingManager.isTrackingMouseData = false;
+
+                        // Save trial data
+                        dataManager.AddTrialToData(
+                            trialManager.currentRound,
+                            trialManager.currentTrial,
+                            trackingManager.GetMousePosition().x,
+                            trackingManager.GetMousePosition().y,
+                            activeOrb.Color.ToString(),
+                            activeOrb.Position.ToString(),
+                            delay,
+                            startRT,
+                            endRT,
+                            currRT,
+                            hitSuccess ? 1 : 0);
+
+                        trialSaved = true;
+                        // Debug.Log($"Recorded first {(hitSuccess ? "success" : "failure")} for this trial");
                 }
                 else
                 {
-                        trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.failedClick);
+                        // Debug.Log($"Trial already saved - skipping duplicate recording");
                 }
 
-                trackingManager.currentPhase = trackingmanager.TrackingPhase.endClick; // set tracking phase to end click
-                trackingManager.isTrackingMouseData = false; // stop mouse tracking
-
-                dataManager.AddTrialToData(
-                        trialManager.currentRound,
-                        trialManager.currentTrial,
-                        trackingManager.GetMousePosition().x,
-                        trackingManager.GetMousePosition().y,
-                        activeOrb.Shape.ToString(),
-                        activeOrb.Position.ToString(),
-                        delay,
-                        startRT,
-                        endRT,
-                        currRT,
-                        hitSuccess ? 1 : 0);
-
-                // Debug.Log($"Hit: {hitSuccess}, RT: {currRT}, Delay: {delay}");
-
+                // Always update UI
                 uiManager.UpdateInGameUI(true, currRT, trialManager.currentTrial, trialManager.currentMaxTrials);
-
-                // StartCoroutine(HideOrbWithDelay(delay, activeOrb));
-                HideOrbWithDelay(delay, activeOrb);
         }
 
         public void HideOrbWithDelay(float delay, TrialInfo targetInfo = null)
@@ -316,12 +393,10 @@ public class mainmanager : MonoBehaviour
         // except after last trial of last round => HandleGameEnded()
         private void HandleRoundEnd()
         {
-                trackingManager.SendDataToJS();
+                trackingManager.SaveTrackingData();
                 uiManager.PauseGame();
-                if (trialManager.currentRound > 8) // halfway
-                {
-                        dataManager.SendData(); // send mid-game data to JS
-                }
+                dataManager.SaveGameData();
+
         }
 
         // called after last trial of the last round
@@ -329,8 +404,8 @@ public class mainmanager : MonoBehaviour
         {
                 FPSController.SetActive(false);
                 Cursor.lockState = CursorLockMode.None;
-                trackingManager.SendDataToJS();
-                dataManager.SendSecondData(); // save data and start JS-functions
+                trackingManager.SaveTrackingData();
+                dataManager.SaveGameData(); // save data and start JS-functions
         }
 
         // public void ResetRound()

@@ -7364,7 +7364,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2946581638010116929, guid: aea1c8f15a6cdc34c9b400bc6e5ee883, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8191852586055632446, guid: aea1c8f15a6cdc34c9b400bc6e5ee883, type: 3}
       propertyPath: duration
@@ -32092,15 +32092,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 276b9c62bbfa77f428006146c4f5a428, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numTargetPerShape: 7
+  numTargetPerColor: 8
   numPositions: 4
-  numShapes: 2
+  numColors: 2
   maxTrials: 56
   maxRounds: 8
   practiceTrials: 10
   version: 0
-  longDelay: 0.6
-  shortDelay: 0
+  longAnimation: 2
+  shortAnimation: 0.4
   stimulusTime: 0.4
   currentPhase: waitingForTarget
   isTrialRunning: 0
@@ -32154,8 +32154,6 @@ MonoBehaviour:
       m_Calls: []
   playerCamera: {fileID: 5256384803657185291}
   FPSController: {fileID: 5241267463479774481}
-  sphereColor: {r: 0.9, g: 0, b: 0, a: 1}
-  recColor: {r: 0, g: 0.6313726, b: 1, a: 1}
 --- !u!114 &1069446846
 MonoBehaviour:
   m_ObjectHideFlags: 0

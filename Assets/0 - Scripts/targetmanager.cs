@@ -72,7 +72,7 @@ public class targetmanager : MonoBehaviour
         public void ShowTargetOrb(TrialInfo activeTarget)
         {
                 // show the target based on shape and position
-                if (activeTarget.Shape == TrialInfo.TrialShape.Sphere)
+                if (activeTarget.Color == TrialInfo.TrialColor.Red)
                 {
                         if (dictSpheres.TryGetValue(activeTarget.Position, out GameObject targetObj))
                         {
@@ -82,7 +82,7 @@ public class targetmanager : MonoBehaviour
                                 currentDissolveEffect = targetObj.GetComponent<DissolveEffect>();
                         }
                 }
-                else if (activeTarget.Shape == TrialInfo.TrialShape.Rectangle)
+                else if (activeTarget.Color == TrialInfo.TrialColor.Blue)
                 {
                         if (dictRects.TryGetValue(activeTarget.Position, out GameObject targetObj))
                         {
