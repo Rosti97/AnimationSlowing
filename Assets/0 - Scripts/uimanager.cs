@@ -33,6 +33,7 @@ public class uimanager : MonoBehaviour
     private int earliestExtendedPauseRound = 8;
     private int maxRounds = 16;
     private float pauseTimeRemaining;
+    private bool minPauseReached = false;
 
 
     void Start()
@@ -60,25 +61,30 @@ public class uimanager : MonoBehaviour
     void Update()
     {
         scoreText.text = "Points: " + scorePoints.ToString();
+        
+        if (minPauseReached && Input.GetKeyDown(KeyCode.Space))
+        {
+            NextRoundStart();
+        }
 
         // check if minimum round for extended pause is reached and if the round is odd
-        if (currRound <= earliestExtendedPauseRound || currRound % 2 == 0) return; 
-        
-        if (!extendedPauseText.activeSelf)
-        {
-            extendedPauseText.GetComponent<TMP_Text>().text = "If you want to extend this pause for 2 minutes press \"P\"";
-            extendedPauseText.SetActive(true);
-        }
+        // if (currRound <= earliestExtendedPauseRound || currRound % 2 == 0) return; 
 
-        if (Input.GetKeyDown(KeyCode.P) && !pauseKeyPressed)
-        {
-            // Debug.Log("Exit key pressed");
-            extendedPauseText.GetComponent<TMP_Text>().text = "Extended pause activated";
-            pauseKeyPressed = true;
-            pauseTimeRemaining += 120;
+        // if (!extendedPauseText.activeSelf)
+        // {
+        //     extendedPauseText.GetComponent<TMP_Text>().text = "If you want to extend this pause for 2 minutes press \"P\"";
+        //     extendedPauseText.SetActive(true);
+        // }
 
-            // Debug.Log(startExitKeyTime);
-        }
+        // if (Input.GetKeyDown(KeyCode.P) && !pauseKeyPressed)
+        // {
+        //     // Debug.Log("Exit key pressed");
+        //     extendedPauseText.GetComponent<TMP_Text>().text = "Extended pause activated";
+        //     pauseKeyPressed = true;
+        //     pauseTimeRemaining += 120;
+
+        //     // Debug.Log(startExitKeyTime);
+        // }
     }
 
     public void PauseGame()
@@ -106,6 +112,7 @@ public class uimanager : MonoBehaviour
     {
         inGameUI.SetActive(true);
         pauseUI.SetActive(false);
+        minPauseReached = false;
         roundTxt.text = " ";
         GetComponent<datamanager>().ResetRoundStats();
         // GetComponent<hitmanager>().resetRound();
@@ -122,7 +129,9 @@ public class uimanager : MonoBehaviour
             yield return new WaitForSeconds(1f);
             pauseTimeRemaining -= 1f;
         }
-        NextRoundStart();
+        minPauseReached = true;
+        pauseCountdownText.text = "Press 'Space' to start next round";
+        // NextRoundStart();
     }
 
     private void UpdatePauseUI()

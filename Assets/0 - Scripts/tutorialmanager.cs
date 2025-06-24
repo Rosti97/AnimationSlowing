@@ -10,6 +10,7 @@ public class tutorialmanager : MonoBehaviour
     private string password = "278";
     private string enteredPassword;
     public Camera pauseCamera;
+    private bool audioChecked = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -26,10 +27,11 @@ public class tutorialmanager : MonoBehaviour
 
     public void CheckPassword()
     {
-        enteredPassword = passwordText.text.Trim(); // Remove leading/trailing whitespace
+        // enteredPassword = passwordText.text.Trim(); // Remove leading/trailing whitespace
 
 
-        if (string.Equals(enteredPassword, password, StringComparison.OrdinalIgnoreCase))
+        // if (string.Equals(enteredPassword, password, StringComparison.OrdinalIgnoreCase))
+        if (audioChecked)  
         {
             // Debug.Log("Correct password");
             pauseCamera.gameObject.SetActive(false);
@@ -42,8 +44,16 @@ public class tutorialmanager : MonoBehaviour
         }
     }
 
-    public void TypingStarted() {
-        wrongInput.gameObject.SetActive(false);
+    // public void TypingStarted() {
+    //     wrongInput.gameObject.SetActive(false);
+    // }
+
+
+    public void AudioChecked()
+    {
+        audioChecked = true;
+        // wrongInput.gameObject.SetActive(false);
+        // Debug.Log("Audio checked");
     }
 
 

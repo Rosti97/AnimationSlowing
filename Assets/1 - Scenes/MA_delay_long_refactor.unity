@@ -1454,7 +1454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -398.2}
+  m_AnchoredPosition: {x: 0, y: -311.3}
   m_SizeDelta: {x: 1002.08, y: 270.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &103669459
@@ -1477,7 +1477,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Wrong entry, please try again...
+  m_text: Please check audio!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
@@ -115713,11 +115713,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 517785098704950595, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 50
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 517785098704950595, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 50
+      value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 776176304315020553, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_Color.b
@@ -115768,12 +115768,44 @@ PrefabInstance:
       value: 0.03137255
       objectReference: {fileID: 0}
     - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1069446841}
     - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1069446840}
+    - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: PlayStartPassword
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: AudioChecked
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: tutorialmanager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1153297641929463118, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1164300896359813775, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1219057821464537844, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_Enabled
@@ -115781,15 +115813,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1397779303601846293, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1397779303601846293, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 80
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1397779303601846293, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1397779303601846293, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -225.6
+      value: -108.2
       objectReference: {fileID: 0}
     - target: {fileID: 2105667436528144643, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -115941,13 +115977,13 @@ PrefabInstance:
 
 
         For this,
-        click the speaker icon to hear a three-digit password. Type the digits you
-        hear into the input field below (e.g. hearing "one, two, three"  would be
-        "123"). Then, click on "check" to start the experiment.
+        click the speaker icon to hear three digits spoke.
 
+        If you can''t
+        hear audio, please tell the supervisors.
 
-        You can
-        also use this audio-test to adjust the volume to your preference.'
+        Adjust the volume to your
+        liking!'
       objectReference: {fileID: 0}
     - target: {fileID: 6089178867339915750, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_fontSize
@@ -115987,7 +116023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6089178867339915750, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_HorizontalAlignment
-      value: 8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6089178867339915750, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_hasFontAssetChanged
@@ -115995,11 +116031,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6277445189270468284, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_text
-      value: Check
+      value: Start Experiment
       objectReference: {fileID: 0}
     - target: {fileID: 6277445189270468284, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_fontSize
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6277445189270468284, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_fontAsset
@@ -116019,7 +116055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6277445189270468284, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_fontSizeBase
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6277445189270468284, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_sharedMaterial
@@ -116127,7 +116163,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6765233288464384990, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 155.4
+      value: 450
+      objectReference: {fileID: 0}
+    - target: {fileID: 6765233288464384990, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 6765233288464384990, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -116135,7 +116175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6765233288464384990, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -346.9
+      value: -307.1
       objectReference: {fileID: 0}
     - target: {fileID: 6908863691564683583, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_SizeDelta.y
@@ -116223,7 +116263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8990674162872582325, guid: cf0ffca7846c388479d333fd011abcf1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 115
+      value: 91.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
