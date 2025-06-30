@@ -24,7 +24,12 @@ public class MiddleAnimation : MonoBehaviour
         dissolve.ResetDissolve();
     }
 
-    private void OnMouseDown()
+    // private void OnMouseDown()
+    // {
+    //     dissolve.StartDissolving();
+    // }
+
+    public void StartDissolving()
     {
         dissolve.StartDissolving();
     }

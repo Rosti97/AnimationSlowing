@@ -18,7 +18,9 @@ public class datamanager : MonoBehaviour
 
     private string id;
     private StringBuilder _dataCSVBuilder = new StringBuilder();
-    private string _filePath = Application.dataPath + "/data/"; 
+    private string _filePath = Application.dataPath + "/data/";
+
+    private string qLink = "https://docs.google.com/forms/d/e/1FAIpQLSfx_6S0-1BJUO4elyE2VbKR86XHlCRyGI6dcC3VAAckkikh6Q/viewform?usp=pp_url&entry.238975249=";
     //private string dataBase64;
 
     // [DllImport("__Internal")]
@@ -44,6 +46,8 @@ public class datamanager : MonoBehaviour
         _dataCSVBuilder.AppendLine(header);
 
         _filePath = $"{_filePath}{id}_gameData.csv";
+
+        qLink += id;
 
         // File.WriteAllText(_filePath, _dataCSVBuilder.ToString());
     }
@@ -100,4 +104,8 @@ public class datamanager : MonoBehaviour
         roundRTs.Clear();
     }
 
+    public string GetQLink()
+    {
+        return qLink;
+    }
 }

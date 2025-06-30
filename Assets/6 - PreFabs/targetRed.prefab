@@ -294,7 +294,7 @@ MonoBehaviour:
   multiplier: 1
   endScale: 3
   audioSource: {fileID: 6771729104130538593}
-  hitSound: {fileID: 8300000, guid: 1d620cdfa0d712847888e1429b35348f, type: 3}
+  hitSound: {fileID: 8300000, guid: c9472881963459c44a29e6a3a2820b4c, type: 3}
   bigHitSound: {fileID: 8300000, guid: 2f79166c24a3b0c43b6a955e9442d52f, type: 3}
   shadowSound: {fileID: 8300000, guid: b3c5f53e0e86bb440a363622923f4755, type: 3}
 --- !u!114 &286157513496008685

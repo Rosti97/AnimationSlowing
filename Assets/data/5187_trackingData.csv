@@ -1,1 +1,0 @@
-id, round, trial, version, timestamp, frame, _relativeTime, pointerX, pointerY, mouseDX, mouseDY, phase, event;

@@ -28,6 +28,7 @@ public class targetmanager : MonoBehaviour
 
         public DissolveEffect currentDissolveEffect;
         public DissolveEffect middleDissolveEffect;
+        private MiddleAnimation middleAnimation;
 
 
         // Dictionaries for each shape
@@ -55,6 +56,8 @@ public class targetmanager : MonoBehaviour
                         { TrialInfo.TrialPosition.Right, redRight },
                         { TrialInfo.TrialPosition.Bottom, redBottom },
                 };
+
+                middleAnimation = orb_middle.GetComponent<MiddleAnimation>();
         }
 
         // TODO: searching for occurrence
@@ -113,6 +116,10 @@ public class targetmanager : MonoBehaviour
                 middleDissolveEffect.StartDissolving();
         }
 
+        public void StartMiddleDissolve()
+        {
+                middleAnimation.StartDissolving();
+        }
         void HandleTrialStart(string side)
         {
                 // HideMiddleOrb();

@@ -9,6 +9,7 @@ using TrialInfo = trialmanager.TrialInfo;
 using AssetProjectiles;
 using UnityEngine.Rendering;
 using UnityEngine.Events;
+using System.Resources;
 
 public class mainmanager : MonoBehaviour
 {
@@ -99,7 +100,7 @@ public class mainmanager : MonoBehaviour
 
                 // trackingManager.updateMouseTracking(); // update mouse tracking
 
-                if (Input.GetMouseButtonDown(0) && !trialManager.isRoundFinished) // clicks only counts if no start or pause screen
+                if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !trialManager.isRoundFinished) // clicks only counts if no start or pause screen
                 {
                         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
 
@@ -120,6 +121,7 @@ public class mainmanager : MonoBehaviour
                                                 trialManager.PrepareTrial();
                                                 eventTriggered = true;
                                                 trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.middleTargetClick);
+                                                targetManager.StartMiddleDissolve(); 
 
                                                 soundManager.PlayMiddleSound();
 
@@ -406,6 +408,16 @@ public class mainmanager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 trackingManager.SaveTrackingData();
                 dataManager.SaveGameData(); // save data and start JS-functions
+
+                Invoke("QuitGame", 1.5f);
+        }
+
+        void QuitGame()
+        {
+                // TODO
+                Application.OpenURL(dataManager.GetQLink());
+
+                Application.Quit();
         }
 
         // public void ResetRound()
