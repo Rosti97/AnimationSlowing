@@ -31919,7 +31919,7 @@ MonoBehaviour:
   roundRoundText: {fileID: 1591975485}
   extendedPauseText: {fileID: 92811147}
   confirmPreExitUI: {fileID: 359392840}
-  pauseDuration: 2
+  pauseDuration: 30
 --- !u!114 &1069446838
 MonoBehaviour:
   m_ObjectHideFlags: 0

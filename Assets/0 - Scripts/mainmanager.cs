@@ -120,7 +120,9 @@ public class mainmanager : MonoBehaviour
                                                 animationManager.StartGlowing();
                                                 trialManager.PrepareTrial();
                                                 eventTriggered = true;
+
                                                 trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.middleTargetClick);
+
                                                 targetManager.StartMiddleDissolve(); 
 
                                                 soundManager.PlayMiddleSound();
@@ -139,10 +141,9 @@ public class mainmanager : MonoBehaviour
                                 {
                                         currentHitPoint = hit.point;
 
-                                        // TODO: track failure, but remain the target until clicked
+                                        
                                         StopTrial(false); // hit fail
                                         // Debug.Log(hit.collider.name + " hit, but no target");
-                                        // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         // get the x,y,z position of the hit
 
                                 }
@@ -150,11 +151,13 @@ public class mainmanager : MonoBehaviour
                 }
                 if (targetAppeared)
                 {
+                        
                         trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.targetAppeared);
                         targetAppeared = false;
                 }
                 else if (!eventTriggered)
                 {
+                        
                         trackingManager.updateMouseTracking(mouseDelta); // update mouse tracking without triggered Event    
                 }
                 eventTriggered = false;
@@ -166,70 +169,6 @@ public class mainmanager : MonoBehaviour
         // hitSuccess = true if the player hit the side target
         void StopTrial(bool hitSuccess)
         {
-                // endRT = Time.time;
-                // currRT = endRT - startRT;
-
-                //  TrialInfo activeOrb = trialManager.GetCurrentTargetInfo();
-                // // Color currentColor = activeOrb.Shape == TrialInfo.TrialShape.Sphere ? sphereColor : recColor;
-
-                // float delay = trialManager.GetDelay(activeOrb);
-
-                // if (hitSuccess && trialSaved) // save trial data only once
-                // {
-                //         Debug.Log("Trial already saved, skipping save.");
-                //         animationManager.StopGlowing();
-                //         HideOrbWithDelay(delay, activeOrb);
-                //         return;
-                // }
-                // else if (!hitSuccess && !trialSaved) // save trial data only once
-                // {
-                //         Debug.Log("Trial not saved, saving now.");
-                //         trialSaved = true; // set trialSaved to true to prevent multiple saves
-                // }
-                // else if (hitSuccess && !trialSaved)
-                // {
-                //         animationManager.StopGlowing();
-                //         HideOrbWithDelay(delay, activeOrb);
-                //         trialSaved = true;
-                //         Debug.Log("Trial saved successfully.");
-                // }
-
-
-                // eventTriggered = true;
-                // if (hitSuccess)
-                // {
-                //         trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.targetClick);
-                // }
-                // else
-                // {
-                //         trackingManager.updateMouseTracking(mouseDelta, trackingmanager.EventTrigger.failedClick);
-                // }
-
-                // trackingManager.currentPhase = trackingmanager.TrackingPhase.endClick; // set tracking phase to end click
-                // trackingManager.isTrackingMouseData = false; // stop mouse tracking
-
-                // dataManager.AddTrialToData(
-                //         trialManager.currentRound,
-                //         trialManager.currentTrial,
-                //         trackingManager.GetMousePosition().x,
-                //         trackingManager.GetMousePosition().y,
-                //         activeOrb.Shape.ToString(),
-                //         activeOrb.Position.ToString(),
-                //         delay,
-                //         startRT,
-                //         endRT,
-                //         currRT,
-                //         hitSuccess ? 1 : 0);
-
-                // // Debug.Log($"Hit: {hitSuccess}, RT: {currRT}, Delay: {delay}");
-
-                // uiManager.UpdateInGameUI(true, currRT, trialManager.currentTrial, trialManager.currentMaxTrials);
-
-                // // StartCoroutine(HideOrbWithDelay(delay, activeOrb));
-                // // HideOrbWithDelay(delay, activeOrb);
-
-
-
                  // Calculate reaction time
                 endRT = Time.time;
                 currRT = endRT - startRT;
@@ -252,6 +191,7 @@ public class mainmanager : MonoBehaviour
                         // Update tracking data
                         var eventType = hitSuccess ? trackingmanager.EventTrigger.targetClick
                                                   : trackingmanager.EventTrigger.failedClick;
+
                         trackingManager.updateMouseTracking(mouseDelta, eventType);
 
                         trackingManager.currentPhase = trackingmanager.TrackingPhase.endClick;
@@ -274,10 +214,6 @@ public class mainmanager : MonoBehaviour
                         trialSaved = true;
                         // Debug.Log($"Recorded first {(hitSuccess ? "success" : "failure")} for this trial");
                 }
-                else
-                {
-                        // Debug.Log($"Trial already saved - skipping duplicate recording");
-                }
 
                 // Always update UI
                 uiManager.UpdateInGameUI(true, currRT, trialManager.currentTrial, trialManager.currentMaxTrials);
@@ -289,16 +225,6 @@ public class mainmanager : MonoBehaviour
 
                 // targetManager.HideAllOrbs();
                 targetManager.HideTargetOrb();
-
-                // soundManager.PlayHitSound();
-                // TODO play sound
-                // soundManager.PlaySound();
-
-                // das muss zu onExplosionEnd
-                // trialManager.StopTrial();
-
-                // targetManager.HideAllOrbs();
-                // soundManager.PlayHitSound();
         }
 
         // called in StopTrial() with first hit after middle target
@@ -306,29 +232,13 @@ public class mainmanager : MonoBehaviour
         {
                 canCastSpell = false;
 
-                // targetManager.HideAllOrbs();
                 targetManager.HideTargetOrb();
 
-                // soundManager.PlayHitSound();
 
                 trialManager.StopTrial();
 
-                // targetManager.HideAllOrbs();
-                // soundManager.PlayHitSound();
-
                 // then wait for stimulus time?
                 yield return new WaitForSeconds(trialManager.stimulusTime);
-
-
-
-                // trialManager.StopTrial();
-
-                // canCastSpell = true;
-
-                // if (trialManager.currentTrial < trialManager.currentMaxTrials)
-                // {
-                //         targetManager.ShowMiddleOrb();
-                // }
 
         }
 
@@ -342,17 +252,7 @@ public class mainmanager : MonoBehaviour
                 canCastSpell = false;
                 trackingManager.isTrackingMouseData = true; // start mouse tracking
 
-                // trackingManager.currentPhase = trackingmanager.TrackingPhase.startClick;
-                // trackingManager.updateMouseTracking(); // update mouse tracking
-
-                // currentShadows.SetActive(false);
-                // currentExplosion.SetActive(false);
-
-
-                //targetManager.HideAllOrbs();
-                // targetManager.HideTargetOrb();
                 targetManager.HideMiddleOrb();
-
 
                 // soundManager.PlayHitSound();
                 StartCoroutine(PreTargetStimulusTime(activeOrb));
@@ -395,8 +295,10 @@ public class mainmanager : MonoBehaviour
         // except after last trial of last round => HandleGameEnded()
         private void HandleRoundEnd()
         {
+                
                 trackingManager.SaveTrackingData();
                 uiManager.PauseGame();
+                
                 dataManager.SaveGameData();
 
         }
@@ -406,7 +308,9 @@ public class mainmanager : MonoBehaviour
         {
                 FPSController.SetActive(false);
                 Cursor.lockState = CursorLockMode.None;
+                
                 trackingManager.SaveTrackingData();
+                
                 dataManager.SaveGameData(); // save data and start JS-functions
 
                 Invoke("QuitGame", 1.5f);
@@ -414,17 +318,11 @@ public class mainmanager : MonoBehaviour
 
         void QuitGame()
         {
-                // TODO
+                
                 Application.OpenURL(dataManager.GetQLink());
 
                 Application.Quit();
         }
-
-        // public void ResetRound()
-        // {
-        //         trialManager.StartNewRound();
-        //         uiManager.UpdateInGameUI(false, 0, 0, trialManager.maxTrials);
-        // }
 
         public void ResetRound()
         {

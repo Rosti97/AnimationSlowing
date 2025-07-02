@@ -74,7 +74,7 @@ public class trialmanager : MonoBehaviour
 
         private targetmanager targetManager;
         // private trackingmanager trackingManager;
-        private fpscounter fpsCounter;
+        // private fpscounter fpsCounter;
 
         public void Start()
         {
@@ -82,7 +82,7 @@ public class trialmanager : MonoBehaviour
                 maxTrials = numColors * numPositions * numTargetPerColor; // with 7 targets per Color and 4 positions, we have 56 trials
                 targetManager = GetComponent<targetmanager>();
                 // trackingManager = GetComponent<trackingmanager>();
-                fpsCounter = GetComponent<fpscounter>();
+                // fpsCounter = GetComponent<fpscounter>();
                 mainmanager.Instance.OnExplosionEnd.AddListener(StopTrial);
                 mainmanager.Instance.OnMiddleEnd.AddListener(StartTrial);
         }
@@ -96,7 +96,7 @@ public class trialmanager : MonoBehaviour
                 currentRound = 0;
                 ResetTrialState();
                 targetManager.ShowMiddleOrb();
-                fpsCounter.StartFPSTest(); // start fps test for practice round for 15 seconds
+                // fpsCounter.StartFPSTest(); // start fps test for practice round for 15 seconds
                 // isTrialRunning = false;
                 // isWaitingPhase = false;
                 // isTrackingRunning = false;
@@ -159,7 +159,7 @@ public class trialmanager : MonoBehaviour
                 // isTrackingRunning = true;
                 // currentPhase = "activeTargeting";
 
-                currentTargetInfo = trialOrder[currentTrial]; // NOTE: nur uebergangsweise
+                currentTargetInfo = trialOrder[currentTrial]; 
                 currentTrial++;
 
                 // should only be called when middle orb is dissolved
@@ -242,17 +242,6 @@ public class trialmanager : MonoBehaviour
                         }
                 }
                 return shortAnimation; // default short delay
-
-
-
-
-
-
-                // TODO: change to new versions and no rounds
-                //         if (currentRound > 8) return shortAnimation; // short delay for all trials after 8 rounds
-                //         else if (version == "lld" && activeOrbStr == "left") return longAnimation;
-                //         else if (version == "rld" && activeOrbStr == "right") return longAnimation;
-                //         return shortAnimation; // short
         }
 
         public void UpdateTrackingPhase(string phase)
@@ -260,13 +249,9 @@ public class trialmanager : MonoBehaviour
                 currentPhase = phase;
         }
 
-        // returns current string of side orb
+
         public TrialInfo GetCurrentTargetInfo()
         {
-                // isWaitingPhase = false;
-                // isTrackingRunning = true;
-                // currentPhase = "activeTracking";
                 return currentTargetInfo;
-                // return currentTargetStr;
         }
 }
