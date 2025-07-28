@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Unity.VisualScripting;
 
 public class trialmanager : MonoBehaviour
 {
         // important stuff for the trial
-        public int numTargetPerColor = 7;
+        public int numTargetPerColor = 8;
         public int numPositions = 4;
         public int numColors = 2; 
         public int maxTrials = 56; // maximum trials per round
@@ -128,24 +130,65 @@ public class trialmanager : MonoBehaviour
                 // list
                 trialOrder = new List<TrialInfo>();
 
-                for (int i = 0; i < currentMaxTrials / 2; i++)
+                if (currentRound == 0)
                 {
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Left));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Right));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Top));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Bottom));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Left));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Right));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Top));
-                        trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Bottom));
+                        for (int i = 0; i < 2; i++)
+                        {
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Left));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Right));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Top));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Bottom));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Left));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Right));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Top));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Bottom));
+                        }
+                }
+                else
+                {
+                        for (int i = 0; i < numTargetPerColor; i++)
+                        {
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Left));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Right));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Top));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Red, TrialInfo.TrialPosition.Bottom));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Left));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Right));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Top));
+                                trialOrder.Add(new TrialInfo(TrialInfo.TrialColor.Blue, TrialInfo.TrialPosition.Bottom));
+                        }
                 }
 
                 // shuffle trial order Fisher-Yates algorithm
-                for (int i = trialOrder.Count - 1; i > 0; i--)
+                        for (int i = trialOrder.Count - 1; i > 0; i--)
+                        {
+                                int randomIndex = UnityEngine.Random.Range(0, i + 1);
+                                (trialOrder[randomIndex], trialOrder[i]) = (trialOrder[i], trialOrder[randomIndex]);
+                        }
+
+                //print random order to console
+                int counter_red = 0;
+                int counter_blue = 0;
+                int counter_left = 0;
+                int counter_right = 0;
+                int counter_top = 0;
+                int counter_bottom = 0;
+
+                foreach (TrialInfo trial in trialOrder)
                 {
-                        int randomIndex = UnityEngine.Random.Range(0, i + 1);
-                        (trialOrder[randomIndex], trialOrder[i]) = (trialOrder[i], trialOrder[randomIndex]);
+                        if (trial.Color == TrialInfo.TrialColor.Red) counter_red++;
+                        else if (trial.Color == TrialInfo.TrialColor.Blue) counter_blue++;
+
+                        if (trial.Position == TrialInfo.TrialPosition.Left) counter_left++;
+                        else if (trial.Position == TrialInfo.TrialPosition.Right) counter_right++;
+                        else if (trial.Position == TrialInfo.TrialPosition.Top) counter_top++;
+                        else if (trial.Position == TrialInfo.TrialPosition.Bottom) counter_bottom++;
                 }
+
+                UnityEngine.Debug.Log($"Trial Order: {trialOrder.Count} trials, " +
+                        $"Red: {counter_red}, Blue: {counter_blue}, " +
+                        $"Left: {counter_left}, Right: {counter_right}, " +
+                        $"Top: {counter_top}, Bottom: {counter_bottom}");
         }
 
         // called in mainmanager with hit of middle target

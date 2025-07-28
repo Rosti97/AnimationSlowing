@@ -44,8 +44,8 @@ public class targetBehavior : MonoBehaviour
 
         yield return new WaitForSeconds(shadowDelay);
 
-        if (explosionObject != null)
-            explosionObject.SetActive(true);
+        //if (explosionObject != null)
+        explosionObject.SetActive(true);
 
 
         audioSource.Stop();

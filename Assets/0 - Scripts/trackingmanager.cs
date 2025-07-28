@@ -16,7 +16,7 @@ public class trackingmanager : MonoBehaviour
 
         private StringBuilder _trackingDataBuilder = new StringBuilder();
         private string _filePath = Application.dataPath + "/data/";
-        private string trackingDataHeader = "id, round, trial, version, timestamp, frame, _relativeTime, pointerX, pointerY, mouseDX, mouseDY, phase, event;";
+        private string trackingDataHeader = "id, round, trial, version, timestamp, frame, _relativeTime, pointerX, pointerY, mouseDX, mouseDY, phase, event";
 
         public enum TrackingPhase
         {
@@ -130,7 +130,7 @@ public class trackingmanager : MonoBehaviour
                        $"{mouseDelta.x:F3}," +
                        $"{mouseDelta.y:F3}," +
                        $"{currentPhase}," +
-                       $"{trigger};";
+                       $"{trigger}";
 
                 _trackingDataBuilder.AppendLine(lastTrackingEntry);
 
@@ -142,7 +142,9 @@ public class trackingmanager : MonoBehaviour
                 _pVersion = version;
                 _filePath = $"{_filePath}{_pID}_trackingData.csv";
 
-                File.WriteAllText(_filePath, trackingDataHeader); // create file with header
+                //File.WriteAllText(_filePath, trackingDataHeader); // create file with header
+                //File.AppendAllText(_filePath, trackingDataHeader);
+                _trackingDataBuilder.AppendLine(trackingDataHeader);
         }
 
         public Vector2 GetMousePosition()

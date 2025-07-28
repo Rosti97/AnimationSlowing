@@ -7442,7 +7442,7 @@ Transform:
   m_GameObject: {fileID: 251472637}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0.09, y: 0, z: 0.38}
+  m_LocalPosition: {x: 0, y: 0, z: 0.38}
   m_LocalScale: {x: 2.29, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32095,10 +32095,10 @@ MonoBehaviour:
   numTargetPerColor: 8
   numPositions: 4
   numColors: 2
-  maxTrials: 56
+  maxTrials: 64
   maxRounds: 8
   practiceTrials: 10
-  version: 0
+  version: 1
   longAnimation: 2
   shortAnimation: 0.4
   stimulusTime: 0.4
@@ -48386,6 +48386,14 @@ PrefabInstance:
     - target: {fileID: 5804235361784674392, guid: 1bf625c299f833a48acf34f93be1e6eb, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109154638190654184, guid: 1bf625c299f833a48acf34f93be1e6eb, type: 3}
+      propertyPath: m_Intensity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6109154638201487310, guid: 1bf625c299f833a48acf34f93be1e6eb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8171831452832996151, guid: 1bf625c299f833a48acf34f93be1e6eb, type: 3}
       propertyPath: m_LocalPosition.x

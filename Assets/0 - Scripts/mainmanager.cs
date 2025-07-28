@@ -78,7 +78,7 @@ public class mainmanager : MonoBehaviour
                 // setup for the game
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
                 // QualitySettings.vSyncCount = 1; 
-                // Application.targetFrameRate = 60;
+                Application.targetFrameRate = 60;
 
         }
 

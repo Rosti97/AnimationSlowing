@@ -54,7 +54,7 @@ public class datamanager : MonoBehaviour
 
     public void AddTrialToData(int round, int trial, float mouse_x, float mouse_y, string shape, string position, float animation_duration, float start_RT, float end_RT, float RT, int status)
     {
-        string row = $"{id}, BL, {round}, {trial}, {DateTime.Now:HH:mm:ss.fff}, {Time.time}, {mouse_x:F3}, {mouse_y:F3}, {shape}, {position}, {animation_duration}, {start_RT}, {end_RT}, {RT}, {status}";
+        string row = $"{id}, RL, {round}, {trial}, {DateTime.Now:HH:mm:ss.fff}, {Time.time}, {mouse_x:F3}, {mouse_y:F3}, {shape}, {position}, {animation_duration}, {start_RT}, {end_RT}, {RT}, {status}";
 
         _dataCSVBuilder.AppendLine(row);
 
