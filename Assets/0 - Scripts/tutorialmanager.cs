@@ -29,7 +29,6 @@ public class tutorialmanager : MonoBehaviour
     {
         // enteredPassword = passwordText.text.Trim(); // Remove leading/trailing whitespace
 
-
         // if (string.Equals(enteredPassword, password, StringComparison.OrdinalIgnoreCase))
         if (audioChecked)  
         {
@@ -53,7 +52,6 @@ public class tutorialmanager : MonoBehaviour
     {
         audioChecked = true;
         // wrongInput.gameObject.SetActive(false);
-        // Debug.Log("Audio checked");
     }
 
 
@@ -62,8 +60,7 @@ public class tutorialmanager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         tutorialUI.SetActive(false);
-        // GetComponent<hitmanager>().StartGame(); // TODO: fuer alte version bitte umkommentieren
-        GetComponent<mainmanager>().StartGame(); // TODO: fuer neue version bitte umkommentieren
+        GetComponent<mainmanager>().StartGame(); 
         GetComponent<uimanager>().StartGameUI();
     }
 }

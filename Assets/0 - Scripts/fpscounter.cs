@@ -8,28 +8,11 @@ using System.Runtime.InteropServices;
 public class fpscounter : MonoBehaviour
 {
 
+    // INFO
+    // Only useful if you need to run it on different devices
+    // Feel free to deactivate this script
 
-    // https://www.youtube.com/watch?v=xOCScMQIxrU
-    // private float pollingTime = 1f;
-    // private float time;
-    // private int frameCount;
-    // public TMP_Text fpsCounterText;
-
-    //     // Update is called once per frame
-    //     void Update()
-    //     {
-    //         time += Time.deltaTime;
-    //         frameCount++;
-
-    //         if (time >= pollingTime)
-    //         {
-    //             int framerate = Mathf.RoundToInt(frameCount / time);
-    //             fpsCounterText.text = framerate.ToString() + " FPS";
-    //             time -= pollingTime;
-    //             frameCount = 0;
-    //         }
-    //     }
-
+    
     private bool isActive = false;
     private float totalTime = 0f;
     private int totalFrames = 0;
@@ -63,15 +46,6 @@ public class fpscounter : MonoBehaviour
             {
                 GetHardwareData();
             }
-            // if (totalTime <= 10f)
-            // {
-            //     totalTime += Time.deltaTime;
-            //     totalFrames++;
-            // }
-            // else if (isActive && totalTime > 10f)
-            // {
-            //     GetHardwareData();
-            // }
         }
     }
 
@@ -80,9 +54,6 @@ public class fpscounter : MonoBehaviour
         isActive = false;
         int averageFPS = Mathf.RoundToInt(totalFrames / totalTime);
 
-        // StringBuilder hardwareData = new StringBuilder();
-        // hardwareData.AppendLine("ID, ScreenWidth, ScreenHeight, RefreshRate, GPUName, CPUName, OSName, AverageFPS;");
-
         string id = GetComponent<datamanager>().GetID();
 
         string hardwareData = $"{id},{screenWidth},{screenHeight},{screenRefreshRate},{GPUName},{CPUName},{OSName},{averageFPS};";
@@ -90,7 +61,6 @@ public class fpscounter : MonoBehaviour
 #if UNITY_WEBGL == true && !UNITY_EDITOR
         receiveHardwareData(id, hardwareData);
 #endif
-        // Debug.Log("Hardware data sent: " + hardwareData);
         this.enabled = false; // Disable this script after sending data
     }
 

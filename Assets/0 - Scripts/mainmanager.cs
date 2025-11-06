@@ -42,8 +42,6 @@ public class mainmanager : MonoBehaviour
 
         private UnityEngine.Vector3 currentHitPoint;
 
-        // public Color sphereColor = new Color(0.9f, 0.0f, 0f, 1f); // color of the sphere target
-        // public Color recColor = new Color(0f, 0f, 1f, 1f); // color of the rectangle target
         private bool trialSaved = false;
 
         void Awake()
@@ -52,7 +50,6 @@ public class mainmanager : MonoBehaviour
                 DontDestroyOnLoad(gameObject); // set the instance to this
         }
 
-        //private UnityEngine.Vector3 hitPosition = new UnityEngine.Vector3(1, 1, 1); // position of the hit target
         void Start()
         {
 
@@ -65,9 +62,6 @@ public class mainmanager : MonoBehaviour
                 trialManager = GetComponent<trialmanager>();
                 targetManager = GetComponent<targetmanager>();
                 trackingManager = GetComponent<trackingmanager>();
-
-                // NOTE: TEST
-                // projectileTest = GetComponent<ProjectileTest>();
 
                 // register to events
                 trialManager.OnTrialStarted += HandleTrialStart;
@@ -98,7 +92,6 @@ public class mainmanager : MonoBehaviour
 
                 mouseDelta = FPSController.GetComponentInChildren<FirstPersonLook>().updateFPSController(); // rotate camera
 
-                // trackingManager.updateMouseTracking(); // update mouse tracking
 
                 if ((Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)) && !trialManager.isRoundFinished) // clicks only counts if no start or pause screen
                 {
@@ -108,7 +101,6 @@ public class mainmanager : MonoBehaviour
                         {
                                 animationManager.PlayAnimation();
                                 soundManager.PlayShootSound();
-                                // projectileTest.StartFiring(hit.point); // NOTE: TEST
 
                                 if (hit.collider.CompareTag("orb"))
                                 {
@@ -127,14 +119,12 @@ public class mainmanager : MonoBehaviour
 
                                                 soundManager.PlayMiddleSound();
 
-                                                // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         }
                                         else if ((trialManager.isTrialRunning && hit.collider.name == "red") || (trialManager.isTrialRunning && hit.collider.name == "blue")) // side target hit, trial stops
                                         {
                                                 currentHitPoint = hit.collider.transform.position;
 
                                                 StopTrial(true); // hit success
-                                                                 // projectileTest.StartFiring(hit.point); // NOTE: TEST
                                         }
                                 }
                                 else if (trialManager.isTrialRunning && !hit.collider.CompareTag("orb")) // hit no traget, but only counts if trial is running
@@ -143,8 +133,6 @@ public class mainmanager : MonoBehaviour
 
                                         
                                         StopTrial(false); // hit fail
-                                        // Debug.Log(hit.collider.name + " hit, but no target");
-                                        // get the x,y,z position of the hit
 
                                 }
                         }
@@ -212,7 +200,6 @@ public class mainmanager : MonoBehaviour
                             hitSuccess ? 1 : 0);
 
                         trialSaved = true;
-                        // Debug.Log($"Recorded first {(hitSuccess ? "success" : "failure")} for this trial");
                 }
 
                 // Always update UI
@@ -223,7 +210,6 @@ public class mainmanager : MonoBehaviour
         {
                 canCastSpell = false;
 
-                // targetManager.HideAllOrbs();
                 targetManager.HideTargetOrb();
         }
 

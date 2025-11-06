@@ -65,7 +65,6 @@ public class trackingmanager : MonoBehaviour
 
                 if (_relativeTime >= _maxCountingTime) // if trial takes longer than 4s we stop tracking
                 {
-                        // Debug.Log("STOP");
                         return;
                 }
 
@@ -142,8 +141,6 @@ public class trackingmanager : MonoBehaviour
                 _pVersion = version;
                 _filePath = $"{_filePath}{_pID}_trackingData.csv";
 
-                //File.WriteAllText(_filePath, trackingDataHeader); // create file with header
-                //File.AppendAllText(_filePath, trackingDataHeader);
                 _trackingDataBuilder.AppendLine(trackingDataHeader);
         }
 

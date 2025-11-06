@@ -35,16 +35,10 @@ public class targetBehavior : MonoBehaviour
 
     private IEnumerator ShadowThenExplosion()
     {
-        // if (shadowObject != null)
-        // {
-        //     shadowObject.SetActive(true);
-        //     yield return StartCoroutine(GrowShadow(shadowObject, shadowDelay));
-        // }
 
 
         yield return new WaitForSeconds(shadowDelay);
 
-        //if (explosionObject != null)
         explosionObject.SetActive(true);
 
 
@@ -52,20 +46,16 @@ public class targetBehavior : MonoBehaviour
         if (isLong)
         {
             audioSource.PlayOneShot(bigHitSound);
-            // Debug.Log("hit me baby one more time");
         }
         else
         {
             audioSource.PlayOneShot(hitSound);
         }
 
-
-        // yield return new WaitForSeconds(0.5f);
         shadowObject.SetActive(false);
-        // yield return new WaitForSeconds(1.5f);
+
 
         gameObject.SetActive(false);
-        // explosionObject.SetActive(false);
         dissolve.ResetDissolve();
     }
 
@@ -73,7 +63,6 @@ public class targetBehavior : MonoBehaviour
     {
         shadowObject.SetActive(true);
         StartCoroutine(GrowShadow(shadowObject, shadowDelay));
-        // Debug.Log("End: " + Time.time);
     }
 
 

@@ -61,7 +61,6 @@ public class trialmanager : MonoBehaviour
         public int currentTrial = 0;
         public int currentRound = 0;
         public int currentMaxTrials;
-        // private string currentTargetStr;
         private TrialInfo currentTargetInfo;
 
         // event stuff
@@ -75,8 +74,7 @@ public class trialmanager : MonoBehaviour
         public event GameEndedDelegate OnGameEnded;
 
         private targetmanager targetManager;
-        // private trackingmanager trackingManager;
-        // private fpscounter fpsCounter;
+
 
         public void Start()
         {
@@ -99,9 +97,6 @@ public class trialmanager : MonoBehaviour
                 ResetTrialState();
                 targetManager.ShowMiddleOrb();
                 // fpsCounter.StartFPSTest(); // start fps test for practice round for 15 seconds
-                // isTrialRunning = false;
-                // isWaitingPhase = false;
-                // isTrackingRunning = false;
         }
 
         // sets trials for experiment rounds
@@ -109,9 +104,7 @@ public class trialmanager : MonoBehaviour
         {
                 currentMaxTrials = maxTrials; // 60 trials per round
                 GenerateTrialOrder();
-                // isTrialRunning = false;
                 currentTrial = 0;
-                // currentRound++;
                 ResetTrialState();
                 targetManager.ShowMiddleOrb();
         }
@@ -120,7 +113,6 @@ public class trialmanager : MonoBehaviour
         {
                 isTrialRunning = false;
                 isRoundFinished = false;
-                // isWaitingPhase = false;
                 currentPhase = "waitingForTarget";
         }
 
@@ -198,15 +190,9 @@ public class trialmanager : MonoBehaviour
                 if (currentTrial >= currentMaxTrials) return; // maximum trials in round reached
 
                 isTrialRunning = true;
-                // isWaitingPhase = false;
-                // isTrackingRunning = true;
-                // currentPhase = "activeTargeting";
 
                 currentTargetInfo = trialOrder[currentTrial]; 
                 currentTrial++;
-
-                // should only be called when middle orb is dissolved
-                // OnTrialStarted?.Invoke(currentTargetInfo); // start trial with next side target
         }
 
         private void StartTrial()
@@ -224,7 +210,6 @@ public class trialmanager : MonoBehaviour
                 StartCoroutine(stimulusTimer()); // start timer for stimulus time
 
                 // starts end-trial-event
-
         }
 
         private IEnumerator stimulusTimer()
@@ -233,11 +218,7 @@ public class trialmanager : MonoBehaviour
 
                 OnTrialEnded?.Invoke(currentTargetInfo);
 
-                // isTrackingRunning = false;
                 currentPhase = "waitingForTarget";
-
-                // string activeOrb = trialOrder[currentTrial];
-
 
                 // check if round and/or game is finished
                 if (currentTrial >= currentMaxTrials)

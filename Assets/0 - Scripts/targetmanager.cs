@@ -97,15 +97,8 @@ public class targetmanager : MonoBehaviour
                 }
         }
 
-        // public void HideAllOrbs()
-        // {
-        //         orb_middle.SetActive(false);
-        //         activeTargetObj.SetActive(false);
-        // }
-
         public void HideTargetOrb()
         {
-                // activeTargetObj.SetActive(false);
                 currentDissolveEffect.StartDissolving();
                 activeTargetObj = null;
         }
@@ -122,8 +115,7 @@ public class targetmanager : MonoBehaviour
         }
         void HandleTrialStart(string side)
         {
-                // HideMiddleOrb();
-                // ShowTargetOrb(side);
+
         }
 
 

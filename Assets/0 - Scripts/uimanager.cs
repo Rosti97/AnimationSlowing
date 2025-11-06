@@ -47,14 +47,7 @@ public class uimanager : MonoBehaviour
     {
         inGameUI.SetActive(true);
         pauseUI.SetActive(false);
-        // trialsLeftText.text = GetComponent<hitmanager>().currentMaxTrials.ToString();
         trialsLeftText.text = GetComponent<trialmanager>().currentMaxTrials.ToString();
-        // currRound = GetComponent<trialmanager>().currentRound;
-
-        // if (currRound == earliestPreExitRound)
-        // {
-        //     preExitTxt.SetActive(true);
-        // }
     }
 
 
@@ -66,25 +59,6 @@ public class uimanager : MonoBehaviour
         {
             NextRoundStart();
         }
-
-        // check if minimum round for extended pause is reached and if the round is odd
-        // if (currRound <= earliestExtendedPauseRound || currRound % 2 == 0) return; 
-
-        // if (!extendedPauseText.activeSelf)
-        // {
-        //     extendedPauseText.GetComponent<TMP_Text>().text = "If you want to extend this pause for 2 minutes press \"P\"";
-        //     extendedPauseText.SetActive(true);
-        // }
-
-        // if (Input.GetKeyDown(KeyCode.P) && !pauseKeyPressed)
-        // {
-        //     // Debug.Log("Exit key pressed");
-        //     extendedPauseText.GetComponent<TMP_Text>().text = "Extended pause activated";
-        //     pauseKeyPressed = true;
-        //     pauseTimeRemaining += 120;
-
-        //     // Debug.Log(startExitKeyTime);
-        // }
     }
 
     public void PauseGame()
@@ -92,11 +66,6 @@ public class uimanager : MonoBehaviour
         inGameUI.SetActive(false);
 
         currRound = GetComponent<trialmanager>().currentRound - 1; // -1 because the round is already incremented for next round
-
-        // if (currRound == earliestExtendedPauseRound)
-        // {
-        //     extendedPauseText.SetActive(true);
-        // }
 
         // get stats
         UpdateStats();
@@ -115,7 +84,6 @@ public class uimanager : MonoBehaviour
         minPauseReached = false;
         roundTxt.text = " ";
         GetComponent<datamanager>().ResetRoundStats();
-        // GetComponent<hitmanager>().resetRound();
         GetComponent<trialmanager>().StartNewRound();
         trialsLeftText.text = GetComponent<trialmanager>().currentMaxTrials.ToString();
     }
@@ -131,17 +99,12 @@ public class uimanager : MonoBehaviour
         }
         minPauseReached = true;
         pauseCountdownText.text = "Press 'Space' to start next round";
-        // NextRoundStart();
     }
 
     private void UpdatePauseUI()
     {
-        // Debug.Log("Upadte Pause UI");
         accRoundText.text = (accRound * 100).ToString("F2") + "%";
         rtRoundText.text = rtRound.ToString("F2") + "s";
-
-        // int currRound = GetComponent<hitmanager>().currentRound;
-        // int currRound = GetComponent<trialmanager>().currentRound;
 
         if (currRound != 0)
         {
@@ -182,8 +145,6 @@ public class uimanager : MonoBehaviour
 
         accRound = (float)roundSuccessHitList / roundRTList.Count;
 
-        //Debug.Log(accRound);
-        //Debug.Log(roundSuccessHitList.Count);
 
         // calculate sum for average RT
         float rtSum = 0f;
@@ -222,9 +183,6 @@ public class uimanager : MonoBehaviour
         if (hit && RT <= maxRTForPoints)
         {
             // Calculate points based on reaction time
-            // asked GPT what a good way to calculate points based on reaction time would be
-            // so I have no idea what I'm doing here, but points are calculated based on the reaction time
-            // and also doesn't matter for the study itself
             float normalizedTime = Mathf.Clamp01(1.0f - (RT / maxRTForPoints));
             int basePoints = 100;
             scorePoints += Mathf.RoundToInt(basePoints * normalizedTime);

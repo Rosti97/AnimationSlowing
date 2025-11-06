@@ -8,9 +8,7 @@ using UnityEngine;
 public class datamanager : MonoBehaviour
 {
     private List<string> gameData = new List<string>();
-    // private List<string> gameDataSecondHalf = new List<string>();
 
-    // private List<int> roundSuccessHits = new List<int>();
     private int roundSuccessHitCounter = 0;
     private List<float> roundRTs = new List<float>();
 
@@ -20,18 +18,8 @@ public class datamanager : MonoBehaviour
     private StringBuilder _dataCSVBuilder = new StringBuilder();
     private string _filePath = Application.dataPath + "/data/";
 
-    private string qLink = "https://docs.google.com/forms/d/e/1FAIpQLSfx_6S0-1BJUO4elyE2VbKR86XHlCRyGI6dcC3VAAckkikh6Q/viewform?usp=pp_url&entry.238975249=";
-    //private string dataBase64;
-
-    // [DllImport("__Internal")]
-    // private static extern void receiveGameData(string data);
-    // [DllImport("__Internal")]
-    // private static extern void receiveMidGameData(string data);
-    // // [DllImport("__Internal")]
-    // // private static extern void receiveBackupData(string id, string data);
-    // [DllImport("__Internal")]
-    // private static extern void gameEnd();
-
+    private string qLink = "https://docs.google.com/forms/"; // Insert your questionnaire here
+  
     private void Start()
     {
         // generate random 4-digit id
@@ -49,7 +37,6 @@ public class datamanager : MonoBehaviour
 
         qLink += id;
 
-        // File.WriteAllText(_filePath, _dataCSVBuilder.ToString());
     }
 
     public void AddTrialToData(int round, int trial, float mouse_x, float mouse_y, string shape, string position, float animation_duration, float start_RT, float end_RT, float RT, int status)
@@ -61,7 +48,6 @@ public class datamanager : MonoBehaviour
         // stat stuff for UI
         if (status == 1) // if successful hit
         {
-            // roundSuccessHits.Add(1);
             roundSuccessHitCounter++;
         }
         roundRTs.Add(RT);
